@@ -1,0 +1,1542 @@
+<!DOCTYPE html>
+<html lang="de" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Springer-Marks – Lernplattform</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+    
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    * {
+      transition: background-color 0.15s ease, border-color 0.15s ease;
+    }
+  </style>
+</head>
+
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col antialiased">
+
+  <!-- KOPFZEILE (HEADER) -->
+  <header class="border-b border-slate-200/80 dark:border-slate-800/80 bg-white/90 dark:bg-slate-900/90 sticky top-0 z-30 backdrop-blur-sm">
+    <div class="max-w-4xl mx-auto px-5 sm:px-8 h-16 flex items-center justify-between">
+      
+      <!-- Markenname mit Schach-Springer -->
+      <button onclick="navigateTo('home')" class="flex items-center gap-2.5 font-bold text-lg tracking-tight text-slate-900 dark:text-white hover:opacity-90 focus:outline-none">
+        <span class="w-8 h-8 rounded-lg bg-blue-600 text-white flex items-center justify-center shadow-sm">
+          <!-- Klassischer Online-Schach Springer (Staunton) -->
+          <svg class="w-5 h-5 text-white" viewBox="0 0 45 45" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M 22,10 C 32.5,11 38.5,18 38,39 L 15,39 C 15,30 25,32.5 23,18" fill="currentColor" stroke="currentColor" stroke-width="1.5" />
+            <path d="M 24,18 C 24.38,20.91 18.45,25.37 16,27 C 13,29 13.18,31.34 11,31 C 9.958,30.06 12.41,27.96 11,28 C 10,28 11.19,29.23 10,30 C 9,30 5.997,31 6,26 C 6,24 12,14 12,14 C 12,14 13.89,12.1 14,10.5 C 13.27,7.4 17.05,5.14 19.5,6.5 C 20,7 21.05,7.9 20,9 C 18.95,10.1 19,10 19,10 C 22.5,10 24.5,11 25.5,13 C 25.46,13.75 25.17,14.23 24.5,14.5 C 23.83,14.77 23.4,14.6 23,14.5 C 21.5,14 20.5,14.5 20,15.5 C 19.5,16.5 21.5,17.5 24,18 z" fill="currentColor" stroke="currentColor" stroke-width="1.5" />
+            <circle cx="9.5" cy="25.5" r="0.9" fill="#2563eb" stroke="#2563eb" stroke-width="0.5" />
+            <ellipse cx="14.5" cy="15.5" rx="0.8" ry="1.5" transform="rotate(30 14.5 15.5)" fill="#2563eb" stroke="#2563eb" stroke-width="0.5" />
+            <path d="M 24.55,10.4 C 24.3,11.8 23.5,13.1 22,13.8" stroke="#2563eb" stroke-width="1.2" fill="none" />
+          </svg>
+        </span>
+        <span>Springer-Marks</span>
+      </button>
+
+      <!-- Navigation & Aktionen -->
+      <div class="flex items-center gap-3">
+        
+        <!-- Schnellauswahl-Dropdown -->
+        <div class="relative">
+          <button id="menuToggleBtn" onclick="toggleMenu()" class="flex items-center gap-2 px-3.5 py-2 rounded-xl text-sm font-medium border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:border-slate-300 dark:hover:border-slate-600 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <span>Bereiche</span>
+            <svg class="w-4 h-4 text-slate-500 transition-transform duration-200" id="menuArrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+            </svg>
+          </button>
+
+          <div id="dropdownMenu" class="hidden absolute right-0 mt-2 w-64 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl p-2 z-50">
+            <button onclick="navigateTo('home'); toggleMenu();" class="w-full text-left flex items-center gap-2.5 p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-sm font-medium text-slate-700 dark:text-slate-200">
+              <span class="text-base">🏠</span>
+              <span>Startansicht</span>
+            </button>
+            <div class="h-px bg-slate-100 dark:bg-slate-800 my-1"></div>
+            
+            <div class="px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-400">Klasse 9 Mathematik</div>
+            <button onclick="navigateTo('klasse9'); toggleMenu();" class="w-full text-left flex items-center gap-2.5 p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-sm font-medium text-slate-700 dark:text-slate-200">
+              <span class="text-base">📐</span>
+              <span>Themenübersicht Kl. 9</span>
+            </button>
+            <button onclick="navigateTo('k9-potenzen'); toggleMenu();" class="w-full text-left flex items-center gap-2.5 pl-6 p-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-xs font-medium text-slate-600 dark:text-slate-300">
+              <span>• Potenz- & Wurzelgesetze</span>
+            </button>
+            <button onclick="navigateTo('k9-gleichungen'); toggleMenu();" class="w-full text-left flex items-center gap-2.5 pl-6 p-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-xs font-medium text-slate-600 dark:text-slate-300">
+              <span>• Quadratische Gleichungen</span>
+            </button>
+            <button onclick="navigateTo('k9-funktionen'); toggleMenu();" class="w-full text-left flex items-center gap-2.5 pl-6 p-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-xs font-medium text-slate-600 dark:text-slate-300">
+              <span>• Quadratische Funktionen</span>
+            </button>
+
+            <div class="h-px bg-slate-100 dark:bg-slate-800 my-1"></div>
+            <div class="px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-400">Weitere Bereiche</div>
+            <button onclick="navigateTo('klasse10'); toggleMenu();" class="w-full text-left flex items-center gap-2.5 p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-sm font-medium text-slate-700 dark:text-slate-200">
+              <span class="text-base">⚡</span>
+              <span>Klasse 10 Physik</span>
+            </button>
+            <button onclick="navigateTo('privat'); toggleMenu();" class="w-full text-left flex items-center gap-2.5 p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-sm font-medium text-slate-700 dark:text-slate-200">
+              <span class="text-base">🔒</span>
+              <span>Privat</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Hell / Dunkel Schalter -->
+        <button onclick="toggleDarkMode()" title="Farbschema umschalten" class="p-2 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800">
+          <svg id="moonIcon" class="w-4 h-4 hidden dark:block text-amber-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 9H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+          <svg id="sunIcon" class="w-4 h-4 block dark:hidden text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+        </button>
+
+      </div>
+
+    </div>
+  </header>
+
+  <main class="flex-grow max-w-4xl mx-auto px-5 sm:px-8 py-10 sm:py-14 w-full flex flex-col justify-center">
+
+    <!-- ========================================== -->
+    <!-- ANSICHT 1: STARTANSICHT (HOMEPAGE MIT 3 MENÜPUNKTEN) -->
+    <!-- ========================================== -->
+    <section id="view-home" class="block">
+      <div class="mb-10 text-center sm:text-left">
+        <h1 class="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 dark:text-white">
+          Lernplattform Springer-Marks
+        </h1>
+        <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">
+          Bitte wähle einen Bereich aus:
+        </p>
+      </div>
+
+      <!-- Die 3 großen, ruhigen Menükarten -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+
+        <!-- 1. Klasse 9 Mathematik -->
+        <div onclick="navigateTo('klasse9')" class="group cursor-pointer bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-blue-500/60 dark:hover:border-blue-500/60 rounded-2xl p-6 shadow-sm hover:shadow-md transition flex flex-col justify-between text-left">
+          <div>
+            <div class="w-12 h-12 rounded-xl bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 flex items-center justify-center text-2xl mb-4 group-hover:scale-105 transition-transform">
+              📐
+            </div>
+            <h2 class="text-lg font-bold text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+              Klasse 9 Mathematik
+            </h2>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-2">
+              Potenz- und Wurzelgesetze, Quadratische Gleichungen und Quadratische Funktionen.
+            </p>
+          </div>
+          <div class="mt-6 flex items-center text-xs font-semibold text-blue-600 dark:text-blue-400">
+            <span>Themen öffnen</span>
+            <svg class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          </div>
+        </div>
+
+        <!-- 2. Klasse 10 Physik -->
+        <div onclick="navigateTo('klasse10')" class="group cursor-pointer bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-blue-500/60 dark:hover:border-blue-500/60 rounded-2xl p-6 shadow-sm hover:shadow-md transition flex flex-col justify-between text-left">
+          <div>
+            <div class="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-2xl mb-4 group-hover:scale-105 transition-transform">
+              ⚡
+            </div>
+            <h2 class="text-lg font-bold text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+              Klasse 10 Physik
+            </h2>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-2">
+              Versuchsaufbauten, Formelsammlungen und Simulationen für den Physikunterricht der 10. Jahrgangsstufe.
+            </p>
+          </div>
+          <div class="mt-6 flex items-center text-xs font-semibold text-emerald-600 dark:text-emerald-400">
+            <span>Öffnen</span>
+            <svg class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          </div>
+        </div>
+
+        <!-- 3. Privat (bisherige Seite) -->
+        <div onclick="navigateTo('privat')" class="group cursor-pointer bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-blue-500/60 dark:hover:border-blue-500/60 rounded-2xl p-6 shadow-sm hover:shadow-md transition flex flex-col justify-between text-left">
+          <div>
+            <div class="w-12 h-12 rounded-xl bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 flex items-center justify-center text-2xl mb-4 group-hover:scale-105 transition-transform">
+              🔒
+            </div>
+            <h2 class="text-lg font-bold text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+              Privat
+            </h2>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-2">
+              Bisherige Arbeitsdokumente: Parabellabor, Merkblatt zu quadratischen Gleichungen und Stunden-Feedbackbogen.
+            </p>
+          </div>
+          <div class="mt-6 flex items-center text-xs font-semibold text-amber-600 dark:text-amber-400">
+            <span>Dokumente ansehen</span>
+            <svg class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- ANSICHT 2: KLASSE 9 MATHEMATIK (THEMENÜBERSICHT) -->
+    <!-- ========================================== -->
+    <section id="view-klasse9" class="hidden">
+      <div class="mb-6 flex items-center justify-between">
+        <button onclick="navigateTo('home')" class="text-xs font-semibold text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white flex items-center gap-1.5 py-1 px-2.5 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
+          <span>← Zurück zur Startansicht</span>
+        </button>
+        <span class="text-xs font-medium px-2.5 py-1 rounded-md bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 border border-blue-200/60 dark:border-blue-800/60">
+          Klasse 9 · Mathematik
+        </span>
+      </div>
+
+      <div class="mb-8">
+        <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
+          Mathematik Jahrgangsstufe 9
+        </h2>
+        <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
+          Wähle einen Themenbereich aus:
+        </p>
+      </div>
+
+      <!-- Die 3 Untermenü-Karten -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+
+        <!-- 1. Potenz- und Wurzelgesetze -->
+        <div onclick="navigateTo('k9-potenzen')" class="group cursor-pointer bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-blue-500/60 dark:hover:border-blue-500/60 rounded-2xl p-6 shadow-sm hover:shadow-md transition flex flex-col justify-between text-left">
+          <div>
+            <div class="w-12 h-12 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-xl font-bold font-serif mb-4 group-hover:scale-105 transition-transform">
+              aⁿ
+            </div>
+            <h3 class="text-base font-bold text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+              1. Potenz- und Wurzelgesetze
+            </h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-2">
+              Rechenregeln für Potenzen, Zehnerpotenzen und Wurzeln.
+            </p>
+          </div>
+          <div class="mt-6 flex items-center text-xs font-semibold text-indigo-600 dark:text-indigo-400">
+            <span>Bereich öffnen</span>
+            <svg class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          </div>
+        </div>
+
+        <!-- 2. Quadratische Gleichungen -->
+        <div onclick="navigateTo('k9-gleichungen')" class="group cursor-pointer bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-emerald-500/60 dark:hover:border-emerald-500/60 rounded-2xl p-6 shadow-sm hover:shadow-md transition flex flex-col justify-between text-left">
+          <div>
+            <div class="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-xl font-bold font-serif mb-4 group-hover:scale-105 transition-transform">
+              x²
+            </div>
+            <h3 class="text-base font-bold text-slate-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
+              2. Quadratische Gleichungen
+            </h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-2">
+              Lösungsverfahren: Reinquadratische Formen und die p-q-Formel mit interaktiver Selbstkontrolle.
+            </p>
+          </div>
+          <div class="mt-6 flex items-center text-xs font-semibold text-emerald-600 dark:text-emerald-400">
+            <span>Bereich öffnen</span>
+            <svg class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          </div>
+        </div>
+
+        <!-- 3. Quadratische Funktionen -->
+        <div onclick="navigateTo('k9-funktionen')" class="group cursor-pointer bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-blue-500/60 dark:hover:border-blue-500/60 rounded-2xl p-6 shadow-sm hover:shadow-md transition flex flex-col justify-between text-left">
+          <div>
+            <div class="w-12 h-12 rounded-xl bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 flex items-center justify-center text-xl font-bold mb-4 group-hover:scale-105 transition-transform">
+              📈
+            </div>
+            <h3 class="text-base font-bold text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+              3. Quadratische Funktionen
+            </h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-2">
+              Normalparabel, Streckung &amp; Stauchung, Scheitelpunktform und Nullstellen.
+            </p>
+          </div>
+          <div class="mt-6 flex items-center text-xs font-semibold text-blue-600 dark:text-blue-400">
+            <span>Bereich öffnen</span>
+            <svg class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- UNTERSEITE 1: POTENZ- UND WURZELGESETZE -->
+    <!-- ========================================== -->
+    <section id="view-k9-potenzen" class="hidden">
+      <div class="mb-6 flex items-center gap-3">
+        <button onclick="navigateTo('klasse9')" class="text-xs font-semibold text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white flex items-center gap-1.5 py-1 px-2.5 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
+          <span>← Zurück zu Klasse 9</span>
+        </button>
+      </div>
+
+      <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-8 sm:p-12 text-center max-w-xl mx-auto shadow-sm">
+        <div class="w-16 h-16 rounded-2xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-2xl font-bold font-serif mx-auto mb-5">
+          aⁿ
+        </div>
+        <h2 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-2">
+          Potenz- und Wurzelgesetze
+        </h2>
+        <p class="text-sm text-slate-500 dark:text-slate-400 mb-6">
+          Dieser Bereich wird in Kürze mit Merkblättern, Rechengesetzen und Übungen befüllt.
+        </p>
+        <button onclick="navigateTo('klasse9')" class="px-5 py-2.5 text-sm font-semibold rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm transition">
+          Zur Themenübersicht
+        </button>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- UNTERSEITE 2: QUADRATISCHE GLEICHUNGEN -->
+    <!-- ========================================== -->
+    <section id="view-k9-gleichungen" class="hidden">
+      <div class="mb-6 flex items-center justify-between">
+        <button onclick="navigateTo('klasse9')" class="text-xs font-semibold text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white flex items-center gap-1.5 py-1 px-2.5 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
+          <span>← Zurück zu Klasse 9</span>
+        </button>
+        <span class="text-xs font-medium px-2.5 py-1 rounded-md bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 border border-emerald-200/60 dark:border-emerald-800/60">
+          Thema 2 · Gleichungen
+        </span>
+      </div>
+
+      <div class="mb-6">
+        <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
+          Quadratische Gleichungen
+        </h2>
+        <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
+          Nutze das interaktive Merkblatt zum Üben und Wiederholen der Lösungswege:
+        </p>
+      </div>
+
+      <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 sm:p-6 shadow-sm hover:border-emerald-500/50 hover:shadow-md transition flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div class="flex items-start gap-4">
+          <div class="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-xl shrink-0">
+            📐
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <h3 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white">Merkblatt: Quadratische Gleichungen</h3>
+              <span class="text-[11px] font-medium px-2 py-0.5 rounded bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-300">Interaktiv</span>
+            </div>
+            <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
+              Reinquadratische Gleichungen und die p-q-Formel mit integrierter Sofortprüfung der Eingabefelder.
+            </p>
+          </div>
+        </div>
+        
+        <div class="flex items-center gap-2 self-end sm:self-center shrink-0">
+          <button onclick="openDoc('merkblatt')" class="px-4 py-2 text-sm font-semibold rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm transition">
+            Merkblatt öffnen
+          </button>
+          <button onclick="openInNewTab('merkblatt')" title="In neuem Tab öffnen" class="p-2 text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+          </button>
+          <button onclick="downloadDoc('merkblatt')" title="HTML-Datei herunterladen" class="p-2 text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- UNTERSEITE 3: QUADRATISCHE FUNKTIONEN -->
+    <!-- ========================================== -->
+    <section id="view-k9-funktionen" class="hidden">
+      <div class="mb-6 flex items-center justify-between">
+        <button onclick="navigateTo('klasse9')" class="text-xs font-semibold text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white flex items-center gap-1.5 py-1 px-2.5 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm transition">
+          <span>← Zurück zur Übersicht Klasse 9</span>
+        </button>
+        <span class="text-xs font-medium px-2.5 py-1 rounded-md bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 border border-blue-200/60 dark:border-blue-800/60">
+          Themenbereich 3 · Lernpfad
+        </span>
+      </div>
+
+      <!-- Kopfbereich des Lernpfads -->
+      <div class="mb-8 text-center sm:text-left bg-gradient-to-r from-blue-50/70 via-indigo-50/40 to-slate-50 dark:from-slate-900/90 dark:via-blue-950/30 dark:to-slate-900 border border-blue-100 dark:border-slate-800 rounded-3xl p-6 sm:p-8 shadow-sm">
+        <div class="flex items-center gap-3 mb-2">
+          <span class="w-10 h-10 rounded-2xl bg-blue-600 text-white flex items-center justify-center text-xl shadow-sm">📈</span>
+          <div>
+            <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
+              Lernpfad: Quadratische Funktionen
+            </h2>
+            <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
+              10 Stationen zur Unterrichtseinheit · Klicke auf eine Station für Lernziele &amp; Skill-Check
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ======================================================== -->
+      <!-- PFAD-LAYOUT (EXAKT NACH SKIZZE: 1->2->3->4->5->6->7->8->9->10) -->
+      <!-- ======================================================== -->
+      <div class="relative w-full max-w-4xl mx-auto py-6 px-2 sm:px-6">
+
+        <!-- Hintergrund: Pfadlinie exakt nach der handgezeichneten Skizze -->
+        <svg class="hidden md:block absolute inset-0 w-full h-full pointer-events-none z-0" viewBox="0 0 900 1550" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="sketchPathGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#3b82f6" />
+              <stop offset="25%" stop-color="#6366f1" />
+              <stop offset="55%" stop-color="#8b5cf6" />
+              <stop offset="85%" stop-color="#ec4899" />
+              <stop offset="100%" stop-color="#f43f5e" />
+            </linearGradient>
+            <filter id="pathGlow" x="-20%" y="-20%" width="140%" height="140%">
+              <feDropShadow dx="0" dy="2" stdDeviation="5" flood-color="#6366f1" flood-opacity="0.3" />
+            </filter>
+          </defs>
+          <!-- 
+            Exakter Kurvenverlauf durch die Mitten der 10 Stationen:
+            1: (200, 40)
+            2: (500, 80)
+            3: (740, 225)
+            4: (660, 420)
+            5: (410, 480)
+            6: (150, 640)
+            7: (340, 850)
+            8: (650, 930)
+            9: (760, 1140)
+            10: (450, 1260)
+          -->
+          <path d="
+            M 110 38
+            Q 150 39, 200 40
+            C 320 45, 400 70, 500 80
+            C 620 90, 710 130, 740 225
+            C 760 300, 730 360, 660 420
+            C 580 470, 510 475, 410 480
+            C 260 490, 170 540, 150 640
+            C 135 735, 230 810, 340 850
+            C 460 885, 570 910, 650 930
+            C 760 960, 830 1030, 760 1140
+            C 690 1230, 570 1260, 450 1260
+            C 310 1260, 170 1240, 110 1235
+          " fill="none" stroke="url(#sketchPathGradient)" stroke-width="7" stroke-dasharray="14 10" stroke-linecap="round" opacity="0.8" filter="url(#pathGlow)" />
+        </svg>
+
+        <!-- Mobile Pfadlinie (vertikal links) -->
+        <div class="md:hidden absolute left-6 top-8 bottom-8 w-0 border-l-4 border-dashed border-blue-500/60 pointer-events-none z-0"></div>
+
+        <!-- 10 STATIONEN: Exakt zentriert auf den Kurvenpunkten des Pfads -->
+        <div class="relative z-10 md:h-[1550px] space-y-8 md:space-y-0 pl-10 md:pl-0">
+
+          <!-- 1. Station: (200 / 900 = 22.2%, 40 / 1550 = 2.6%) -->
+          <div class="md:absolute md:left-[22.2%] md:top-[2.6%] md:-translate-x-1/2 md:-translate-y-1/2">
+            <div onclick="openLessonModal(1)" class="w-full md:w-[210px] cursor-pointer bg-white dark:bg-slate-900 border-2 border-blue-500 rounded-xl px-3 py-2 shadow-md hover:shadow-lg hover:border-blue-600 hover:scale-105 transition transform flex items-center gap-2.5">
+              <div class="w-6 h-6 shrink-0 rounded-full bg-blue-600 text-white font-bold text-xs flex items-center justify-center shadow-xs">1</div>
+              <div class="min-w-0">
+                <div class="text-[9px] font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider">Einstieg</div>
+                <h3 class="text-xs font-bold text-slate-900 dark:text-white leading-tight truncate">Lineare vs. quadratische Fkt.</h3>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. Station: (500 / 900 = 55.6%, 80 / 1550 = 5.2%) -->
+          <div class="md:absolute md:left-[55.6%] md:top-[5.2%] md:-translate-x-1/2 md:-translate-y-1/2">
+            <div onclick="openLessonModal(2)" class="w-full md:w-[210px] cursor-pointer bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 shadow-md hover:shadow-lg hover:border-blue-500 hover:scale-105 transition transform flex items-center gap-2.5">
+              <div class="w-6 h-6 shrink-0 rounded-full bg-slate-800 dark:bg-slate-700 text-white font-bold text-xs flex items-center justify-center shadow-xs">2</div>
+              <div class="min-w-0">
+                <div class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Grundlagen</div>
+                <h3 class="text-xs font-bold text-slate-900 dark:text-white leading-tight truncate">Normalparabel f(x) = x²</h3>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. Station: (740 / 900 = 82.2%, 225 / 1550 = 14.5%) -->
+          <div class="md:absolute md:left-[82.2%] md:top-[14.5%] md:-translate-x-1/2 md:-translate-y-1/2">
+            <div onclick="openLessonModal(3)" class="w-full md:w-[210px] cursor-pointer bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 shadow-md hover:shadow-lg hover:border-blue-500 hover:scale-105 transition transform flex items-center gap-2.5">
+              <div class="w-6 h-6 shrink-0 rounded-full bg-slate-800 dark:bg-slate-700 text-white font-bold text-xs flex items-center justify-center shadow-xs">3</div>
+              <div class="min-w-0">
+                <div class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Verschiebung y</div>
+                <h3 class="text-xs font-bold text-slate-900 dark:text-white leading-tight truncate">f(x) = x² + e</h3>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4. Station: (660 / 900 = 73.3%, 420 / 1550 = 27.1%) -->
+          <div class="md:absolute md:left-[73.3%] md:top-[27.1%] md:-translate-x-1/2 md:-translate-y-1/2">
+            <div onclick="openLessonModal(4)" class="w-full md:w-[210px] cursor-pointer bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 shadow-md hover:shadow-lg hover:border-blue-500 hover:scale-105 transition transform flex items-center gap-2.5">
+              <div class="w-6 h-6 shrink-0 rounded-full bg-slate-800 dark:bg-slate-700 text-white font-bold text-xs flex items-center justify-center shadow-xs">4</div>
+              <div class="min-w-0">
+                <div class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Verschiebung x</div>
+                <h3 class="text-xs font-bold text-slate-900 dark:text-white leading-tight truncate">f(x) = (x − d)²</h3>
+              </div>
+            </div>
+          </div>
+
+          <!-- 5. Station: (410 / 900 = 45.6%, 480 / 1550 = 31.0%) -->
+          <div class="md:absolute md:left-[45.6%] md:top-[31.0%] md:-translate-x-1/2 md:-translate-y-1/2">
+            <div onclick="openLessonModal(5)" class="w-full md:w-[210px] cursor-pointer bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 shadow-md hover:shadow-lg hover:border-blue-500 hover:scale-105 transition transform flex items-center gap-2.5">
+              <div class="w-6 h-6 shrink-0 rounded-full bg-slate-800 dark:bg-slate-700 text-white font-bold text-xs flex items-center justify-center shadow-xs">5</div>
+              <div class="min-w-0">
+                <div class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Kombination</div>
+                <h3 class="text-xs font-bold text-slate-900 dark:text-white leading-tight truncate">f(x) = (x − d)² + e</h3>
+              </div>
+            </div>
+          </div>
+
+          <!-- 6. Station: (150 / 900 = 16.7%, 640 / 1550 = 41.3%) -->
+          <div class="md:absolute md:left-[16.7%] md:top-[41.3%] md:-translate-x-1/2 md:-translate-y-1/2">
+            <div onclick="openLessonModal(6)" class="w-full md:w-[210px] cursor-pointer bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 shadow-md hover:shadow-lg hover:border-blue-500 hover:scale-105 transition transform flex items-center gap-2.5">
+              <div class="w-6 h-6 shrink-0 rounded-full bg-slate-800 dark:bg-slate-700 text-white font-bold text-xs flex items-center justify-center shadow-xs">6</div>
+              <div class="min-w-0">
+                <div class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Formfaktor</div>
+                <h3 class="text-xs font-bold text-slate-900 dark:text-white leading-tight truncate">Streckung &amp; Stauchung (a)</h3>
+              </div>
+            </div>
+          </div>
+
+          <!-- 7. Station: (340 / 900 = 37.8%, 850 / 1550 = 54.8%) -->
+          <div class="md:absolute md:left-[37.8%] md:top-[54.8%] md:-translate-x-1/2 md:-translate-y-1/2">
+            <div onclick="openLessonModal(7)" class="w-full md:w-[210px] cursor-pointer bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 shadow-md hover:shadow-lg hover:border-blue-500 hover:scale-105 transition transform flex items-center gap-2.5">
+              <div class="w-6 h-6 shrink-0 rounded-full bg-slate-800 dark:bg-slate-700 text-white font-bold text-xs flex items-center justify-center shadow-xs">7</div>
+              <div class="min-w-0">
+                <div class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Hauptform</div>
+                <h3 class="text-xs font-bold text-slate-900 dark:text-white leading-tight truncate">Scheitelpunktform</h3>
+              </div>
+            </div>
+          </div>
+
+          <!-- 8. Station: (650 / 900 = 72.2%, 930 / 1550 = 60.0%) -->
+          <div class="md:absolute md:left-[72.2%] md:top-[60.0%] md:-translate-x-1/2 md:-translate-y-1/2">
+            <div onclick="openLessonModal(8)" class="w-full md:w-[210px] cursor-pointer bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 shadow-md hover:shadow-lg hover:border-blue-500 hover:scale-105 transition transform flex items-center gap-2.5">
+              <div class="w-6 h-6 shrink-0 rounded-full bg-slate-800 dark:bg-slate-700 text-white font-bold text-xs flex items-center justify-center shadow-xs">8</div>
+              <div class="min-w-0">
+                <div class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Berechnung</div>
+                <h3 class="text-xs font-bold text-slate-900 dark:text-white leading-tight truncate">Nullstellen berechnen</h3>
+              </div>
+            </div>
+          </div>
+
+          <!-- 9. Station: (760 / 900 = 84.4%, 1140 / 1550 = 73.5%) -->
+          <div class="md:absolute md:left-[84.4%] md:top-[73.5%] md:-translate-x-1/2 md:-translate-y-1/2">
+            <div onclick="openLessonModal(9)" class="w-full md:w-[210px] cursor-pointer bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl px-3 py-2 shadow-md hover:shadow-lg hover:border-blue-500 hover:scale-105 transition transform flex items-center gap-2.5">
+              <div class="w-6 h-6 shrink-0 rounded-full bg-slate-800 dark:bg-slate-700 text-white font-bold text-xs flex items-center justify-center shadow-xs">9</div>
+              <div class="min-w-0">
+                <div class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Anwendung</div>
+                <h3 class="text-xs font-bold text-slate-900 dark:text-white leading-tight truncate">Modellierungsaufgaben</h3>
+              </div>
+            </div>
+          </div>
+
+          <!-- 10. Station: (450 / 900 = 50.0%, 1260 / 1550 = 81.3%) -->
+          <div class="md:absolute md:left-[50.0%] md:top-[81.3%] md:-translate-x-1/2 md:-translate-y-1/2">
+            <div onclick="openLessonModal(10)" class="w-full md:w-[230px] cursor-pointer bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-slate-900 dark:to-indigo-950/50 border-2 border-indigo-400 rounded-xl px-4 py-2.5 shadow-md hover:shadow-lg hover:border-indigo-500 hover:scale-105 transition transform flex items-center gap-3">
+              <div class="w-7 h-7 shrink-0 rounded-full bg-indigo-600 text-white font-bold text-xs flex items-center justify-center shadow-xs">10</div>
+              <div class="min-w-0">
+                <div class="text-[9px] font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">Abschluss</div>
+                <h3 class="text-xs font-bold text-slate-900 dark:text-white leading-tight truncate">Lernzielkontrolle &amp; Diagnose</h3>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- DETAIL-MODAL FÜR EINE STUNDE -->
+    <!-- ========================================== -->
+    <div id="lessonModal" class="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm hidden items-center justify-center p-3 sm:p-4">
+      <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl max-w-lg w-full p-5 sm:p-6 shadow-2xl relative max-h-[92vh] overflow-y-auto">
+        
+        <!-- Header des Modals -->
+        <div class="flex items-start justify-between gap-4 mb-4 pb-3 border-b border-slate-100 dark:border-slate-800">
+          <div>
+            <div class="flex items-center gap-2 mb-1">
+              <span id="modalStationTag" class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400 border border-blue-200/50 dark:border-blue-800/50">
+                Station 1
+              </span>
+              <span class="text-xs text-slate-400">Mathematik 9 · Quadratische Funktionen</span>
+            </div>
+            <h3 id="modalTitle" class="text-base sm:text-lg font-bold text-slate-900 dark:text-white leading-snug">
+              Stundenthema
+            </h3>
+          </div>
+          <button onclick="closeLessonModal()" class="p-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+          </button>
+        </div>
+
+        <div class="space-y-4 text-xs sm:text-sm">
+          
+          <!-- LERNZIELE MIT SKILL-CHECKS -->
+          <div class="bg-gradient-to-br from-blue-50/60 to-indigo-50/40 dark:from-slate-800/60 dark:to-blue-950/30 border border-blue-200/70 dark:border-blue-900/50 rounded-2xl p-4">
+            <div class="flex items-center justify-between mb-3">
+              <h4 class="font-bold text-sm text-blue-950 dark:text-blue-200 flex items-center gap-2">
+                <span>🎯</span> Nach der Stunde kann ich...
+              </h4>
+              <span class="text-[11px] text-blue-600 dark:text-blue-400 font-medium">Selbstüberprüfung</span>
+            </div>
+            
+            <!-- Dynamische Liste der Ziele mit Prüfen-Button rechts -->
+            <div id="modalGoalsList" class="space-y-2.5">
+              <!-- Dynamisch befüllt -->
+            </div>
+
+            <!-- Interaktives Prüffeld -->
+            <div id="skillCheckCard" class="hidden mt-4 pt-3.5 border-t border-blue-200/60 dark:border-blue-900/50 bg-white/90 dark:bg-slate-900/90 rounded-xl p-3.5 shadow-sm">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-[11px] font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider flex items-center gap-1.5">
+                  <span>⚡</span> <span id="checkSkillTitle">Skill-Check</span>
+                </span>
+                <button onclick="closeSkillCheck()" class="text-xs text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 font-medium">✕ Schließen</button>
+              </div>
+              <p id="checkQuestion" class="text-xs sm:text-sm font-medium text-slate-800 dark:text-slate-100 mb-3"></p>
+              
+              <div id="checkInteractiveArea" class="space-y-2">
+                <!-- Dynamische Multiple-Choice-Optionen -->
+              </div>
+              
+              <div id="checkFeedback" class="hidden mt-2.5 p-2.5 rounded-lg text-xs font-medium"></div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="mt-4 flex justify-end">
+          <button onclick="closeLessonModal()" class="px-4 py-2 rounded-xl text-xs font-semibold bg-slate-900 hover:bg-slate-800 dark:bg-slate-100 dark:hover:bg-slate-200 text-white dark:text-slate-900 transition shadow-sm">
+            Schließen
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Iframe Bereich -->
+    <div class="flex-grow w-full h-[calc(100vh-3.5rem)] bg-white">
+      <iframe id="viewerFrame" src="" class="w-full h-full border-none" sandbox="allow-scripts allow-same-origin allow-forms allow-downloads allow-modals"></iframe>
+    </div>
+
+  </div>
+
+  <!-- FUSSZEILE -->
+  <footer class="py-6 border-t border-slate-200/60 dark:border-slate-800/60 text-center text-xs text-slate-400">
+    Springer-Marks · Mathematik & Physik
+  </footer>
+
+  <script>
+    /*
+     * View Switcher Navigation
+     */
+    function navigateTo(viewId) {
+      const views = ['home', 'klasse9', 'k9-potenzen', 'k9-gleichungen', 'k9-funktionen', 'klasse10', 'privat'];
+      views.forEach(id => {
+        const el = document.getElementById('view-' + id);
+        if (el) {
+          if (id === viewId) {
+            el.classList.remove('hidden');
+            el.classList.add('block');
+          } else {
+            el.classList.remove('block');
+            el.classList.add('hidden');
+          }
+        }
+      });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    /* 
+     * Vollständig eingebettete HTML-Dokumente für den Bereich "Privat"
+     */
+    let currentDocKey = null;
+    let currentBlobUrl = null;
+
+    const DOCS = {
+      parabel: {
+        title: "Parabellabor – Quadratische Funktionen",
+        filename: "quadratische_funktionen_lernpfad_v19.html",
+        getHtml: () => `<!doctype html>
+<html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Parabellabor – Quadratische Funktionen</title><style>
+:root{--navy:#0d2944;--blue:#0878c9;--cyan:#2eb6d1;--orange:#e07a1f;--purple:#7a4dd8;--green:#1f9d62;--red:#d63230;--ink:#12283c;--muted:#60758a;--line:#d6e2ec;--paper:#f5f8fb;--shadow:0 18px 50px rgba(13,41,68,.13)}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-height:100vh;background:linear-gradient(135deg,#eaf3f9,#f8fbfd 55%,#e8f5f7);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}.app{max-width:1180px;margin:auto;padding:22px}header{display:flex;justify-content:space-between;align-items:center;gap:18px;margin-bottom:14px}.eyebrow{margin:0;color:var(--blue);font-weight:850;letter-spacing:.08em;text-transform:uppercase;font-size:.78rem}h1{margin:.15rem 0;color:var(--navy);font-size:clamp(1.65rem,3vw,2.55rem);line-height:1.08}h2,h3{color:var(--navy)}.meta{display:flex;gap:8px;flex-wrap:wrap}.meta input{width:145px;border:1px solid var(--line);border-radius:10px;padding:.65rem .75rem;background:#fff}.meta-wrap{display:flex;flex-direction:column;align-items:flex-end;gap:6px}.name-warning{display:none;color:#a61f1f;background:#fff0f0;border:1px solid #efb4b4;border-radius:9px;padding:6px 9px;font-size:.82rem;font-weight:800}.name-warning.show{display:block}@keyframes nameBlink{0%,100%{border-color:var(--red);box-shadow:0 0 0 0 rgba(214,50,48,0)}50%{border-color:var(--red);box-shadow:0 0 0 5px rgba(214,50,48,.22)}}#studentName.name-error{border:2px solid var(--red)!important;background:#fff6f6;animation:nameBlink .55s ease-in-out 4}.card{background:#fff;border:1px solid rgba(190,210,225,.9);border-radius:22px;box-shadow:var(--shadow)}.progress{padding:12px 14px;margin-bottom:16px;overflow-x:auto}.track{display:flex;min-width:720px;gap:6px}.stepdot{flex:1;text-align:center;padding:.5rem .35rem;border-radius:10px;background:#edf3f7;color:var(--muted);font-size:.78rem;font-weight:800}.stepdot.active{background:var(--navy);color:#fff}.stepdot.done{background:#e5f5ed;color:#176e49}.page{display:none;padding:24px;min-height:590px}.page.active{display:block}.badge{display:inline-flex;padding:.32rem .65rem;border-radius:999px;background:#e8f3fb;color:var(--blue);font-weight:850;font-size:.8rem}.lead{font-size:1.08rem;color:#334d63;max-width:900px}.instruction{background:#f4f8fb;border-left:5px solid var(--blue);padding:14px 16px;border-radius:10px;margin:18px 0}.solo{background:#f0ecfb;border-left:5px solid var(--purple);padding:13px 15px;border-radius:10px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.field{margin:14px 0}label{display:block;font-weight:800;margin-bottom:6px}input[type=text],input[type=number],textarea,select{width:100%;font-size:1.0625rem;border:1px solid #bfd0de;border-radius:11px;padding:.75rem .8rem;background:#fff;color:var(--ink)}textarea{resize:vertical;min-height:88px}select{font-size:1.12rem;padding:.88rem .9rem}.btn,.tip button{font-size:1.08rem}.inline-formula-input{width:92px!important;display:inline-block!important;font:700 1.22rem Georgia,serif;text-align:center;padding:.42rem .5rem!important;margin:0 .18rem}.worksheet-flash{animation:worksheetBlink .55s ease-in-out 4}@keyframes worksheetBlink{0%,100%{box-shadow:none;background:#f4f8fb}50%{box-shadow:0 0 0 7px rgba(31,157,98,.25);background:#e4f8ed}}.formula{font:700 1.22rem Georgia,serif;background:#f7fafc;border:1px solid var(--line);padding:12px 15px;border-radius:12px;display:inline-block}.graphbox{background:#fff;border:1px solid var(--line);border-radius:16px;padding:10px}.graphbox canvas{display:block;width:100%;max-width:620px;height:auto;margin:auto}.actions{display:flex;justify-content:space-between;gap:10px;margin-top:26px}.btn{border:1px solid var(--line);background:#fff;color:var(--navy);padding:.72rem 1rem;border-radius:12px;font-weight:850;cursor:pointer}.btn.primary{background:var(--navy);border-color:var(--navy);color:#fff}.btn.green{background:var(--green);border-color:var(--green);color:#fff}.btn:disabled{opacity:.45;cursor:not-allowed}.feedback{display:none;margin-top:12px;padding:12px;border-radius:10px}.feedback.show{display:block}.ok{background:#e9f7f0;border:1px solid #a8dcc4}.bad{background:#fff0f0;border:1px solid #efb4b4;color:#9b2424}.error{display:none;margin:14px 0;background:#fff0f0;border:1px solid #efb4b4;color:#9b2424;padding:11px 13px;border-radius:11px;font-weight:750}.error.show{display:block}.invalid{border:2px solid var(--red)!important;background:#fff8f8!important}.valid{border:2px solid var(--green)!important;background:#f2fff8!important}.zero-step{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:1.08rem;margin:8px 0}.calc-input{width:78px!important;text-align:center}.calc-wide{width:125px!important;text-align:center}.result-input{width:110px!important}.transform{margin-left:10px;display:flex;align-items:center;gap:6px;font-weight:800}.tip{margin-top:18px;margin-bottom:12px}.tip button{border:0;background:#edf6fb;color:var(--blue);border-radius:9px;padding:.55rem .75rem;font-weight:800}.tiptext{display:none;margin-top:8px;padding:10px 12px;background:#f4f8fb;border-radius:9px}.lab{display:grid;grid-template-columns:1.4fr .8fr;gap:18px}.slider{margin:16px 0}.slider input{width:100%}.slider b{display:inline-block;min-width:22px}.checklist{display:grid;gap:10px}.choice{border:1px solid var(--line);padding:10px 12px;border-radius:10px;background:#fff}.checkpoint{border:4px solid var(--green);background:linear-gradient(180deg,#fff,#f4fff9);border-radius:18px;padding:18px;margin-top:22px}.summary{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.sum{padding:16px;border-radius:14px;border:1px solid var(--line);background:#f8fbfd}.notice{display:none;position:fixed;inset:0;z-index:1000;background:rgba(13,41,68,.62);align-items:center;justify-content:center;padding:20px}.notice.show{display:flex}.notice-card{max-width:650px;background:#fff;border:4px solid var(--blue);border-radius:22px;padding:26px;box-shadow:0 24px 70px rgba(0,0,0,.28);text-align:center;animation:pulse .7s ease-in-out 2}@keyframes pulse{50%{transform:scale(1.025);box-shadow:0 0 0 9px rgba(46,182,209,.24),0 24px 70px rgba(0,0,0,.28)}}
+.example-panel{display:none;margin-top:16px;padding:18px;border:1px solid var(--line);border-radius:16px;background:#fbfdff}
+.example-panel.show{display:block}
+.example-step{padding:12px 0;border-bottom:1px solid #e5edf3}
+.example-step:last-child{border-bottom:0}
+.example-step-title{font-weight:850;color:var(--navy);margin-bottom:7px}
+.example-equation{font:700 1.18rem Georgia,serif;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.eq-op{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-weight:850}
+.eq-red{color:#d63230;font-weight:850}
+.eq-orange{color:#d56a00;font-weight:850}
+.eq-purple{color:#7a4dd8;font-weight:850}
+.eq-green{color:#168451;font-weight:850}
+.hover-calc{position:relative;display:inline-block;border-bottom:2px dotted #60758a;cursor:help;padding:0 2px}
+.hover-calc::after{content:attr(data-calc);position:absolute;left:50%;bottom:calc(100% + 9px);transform:translateX(-50%);white-space:nowrap;background:#0d2944;color:#fff;font:700 .9rem system-ui,-apple-system,"Segoe UI",sans-serif;padding:7px 10px;border-radius:8px;box-shadow:0 8px 20px rgba(13,41,68,.22);opacity:0;pointer-events:none;transition:opacity .16s ease;z-index:20}
+.hover-calc::before{content:"";position:absolute;left:50%;bottom:calc(100% + 3px);transform:translateX(-50%);border:6px solid transparent;border-top-color:#0d2944;opacity:0;transition:opacity .16s ease;z-index:20}
+.hover-calc:hover::after,.hover-calc:hover::before,.hover-calc:focus::after,.hover-calc:focus::before{opacity:1}
+.example-note{margin-top:12px;color:var(--muted);font-size:.92rem}
+footer{text-align:center;color:var(--muted);font-size:.84rem;padding:20px 0 6px}@media(max-width:760px){.app{padding:12px}.page{padding:17px}.grid,.lab,.summary{grid-template-columns:1fr}.meta{display:none}}
+</style></head><body><div class="app"><header><div><p class="eyebrow">Mathematik · Einführungsphase</p><h1>Parabellabor – quadratische Funktionen</h1></div><div class="meta-wrap"><div class="meta"><input id="studentName" placeholder="Name" aria-label="Name"><input id="studentClass" placeholder="Klasse/Kurs" aria-label="Klasse oder Kurs"></div><div id="nameWarning" class="name-warning">⚠ Bitte gib deinen Namen ein, bevor du die PDF herunterlädst.</div></div></header><div class="card progress"><div class="track" id="progress"></div></div><main class="card" id="main"></main><footer>© Briec Gärtner (2026) für Gesamtschule 3 mit GOST (Eisenhüttenstadt) · Interaktive Lernumgebung</footer></div>
+<div id="task1WorksheetNotice" class="notice"><div class="notice-card"><div style="font-size:3rem">📝 ✓</div><h2>Jetzt analog weiterarbeiten</h2><p>Du hast den Abschnitt <b>„Punkte“</b> abgeschlossen.</p><p>Nimm jetzt dein <b>analoges Arbeitsblatt</b> und bearbeite dort <b>Aufgabe 1 „Wichtige Eigenschaften einer Parabel“</b> vollständig.</p><p>Setze den Lernpfad erst danach fort.</p><button class="btn green" onclick="confirmAnalogTask(1,2)">Aufgabe 1 ist fertig →</button> <button class="btn" onclick="closeAnalogTask(1)">Noch nicht</button></div></div>
+<div id="task2WorksheetNotice" class="notice"><div class="notice-card"><div style="font-size:3rem">📝 ✓</div><h2>Jetzt analog weiterarbeiten</h2><p>Du hast den Abschnitt <b>„Scheitelpunktform“</b> abgeschlossen.</p><p>Nimm jetzt dein <b>analoges Arbeitsblatt</b> und bearbeite dort <b>Aufgabe 2 „Von der Scheitelpunktform zum Graphen und zurück“</b> vollständig.</p><p>Setze den Lernpfad erst danach fort.</p><button class="btn green" onclick="confirmAnalogTask(2,3)">Aufgabe 2 ist fertig →</button> <button class="btn" onclick="closeAnalogTask(2)">Noch nicht</button></div></div>
+<div id="task3WorksheetNotice" class="notice"><div class="notice-card"><div style="font-size:3rem">📝 ✓</div><h2>Jetzt analog weiterarbeiten</h2><p>Du hast den <b>Checkpoint</b> erfolgreich abgeschlossen.</p><p>Nimm jetzt dein <b>analoges Arbeitsblatt</b> und bearbeite dort <b>Aufgabe 3 „Was bewirken a, d und e?“</b> vollständig. Nutze deine Beobachtungen aus dem Parameterlabor.</p><p>Setze den Lernpfad erst danach fort.</p><button class="btn green" onclick="confirmAnalogTask(3,5)">Aufgabe 3 ist fertig →</button> <button class="btn" onclick="closeAnalogTask(3)">Noch nicht</button></div></div>
+<div id="worksheetConfirm" class="notice"><div class="notice-card"><div style="font-size:3rem">📝 ✓</div><h2>Arbeitsblatt bearbeitet?</h2><p>Bestätige erst, wenn du <b>Aufgabe 3 auf deinem analogen Arbeitsblatt vollständig bearbeitet</b> hast.</p><button class="btn green" onclick="confirmWorksheet()">Ja, Aufgabe 3 ist fertig</button> <button class="btn" onclick="closeWorksheetConfirm()">Noch nicht</button></div></div><div id="zerosWorksheetNotice" class="notice"><div class="notice-card"><div style="font-size:3rem">📝 ✓</div><h2>Jetzt analog weiterarbeiten</h2><p>Bearbeite nun <b>Aufgabe 4 „Nullstellen aus der Scheitelpunktform“ auf deinem analogen Arbeitsblatt</b>.</p><p>Berechne die Nullstellen der <b>vier gegebenen Funktionen auf einem Extrablatt</b> und gib jeweils den vollständigen Rechenweg an.</p><p>Nutze anschließend die freigeschaltete <b>Selbstkontrolle im Lernpfad</b>, um deine Ergebnisse zu überprüfen.</p><button class="btn primary" onclick="closeZerosWorksheetNotice()">Verstanden</button></div></div><div id="pdfNotice" class="notice"><div class="notice-card"><div style="font-size:3rem">📄 ✓</div><h2>PDF erfolgreich erstellt!</h2><p>Speichere die PDF an einem Ort, an dem du sie wiederfindest, und <b>gib sie anschließend in itslearning ab.</b></p><button class="btn primary" onclick="closePdfNotice()">Verstanden</button></div></div>
+<script>
+const PREFIX='parabel_v15_'; const labels=['Start','Punkte','Scheitelpunktform','Parameterlabor','Checkpoint','Nullstellen','Lernzielkontrolle','Abschluss'];
+const variants={
+ points:[{a:1,d:1,e:-4},{a:-.5,d:-2,e:3},{a:.5,d:2,e:-2},{a:-1,d:1,e:4}],
+ vertex:[{a:1,d:2,e:-3},{a:1,d:-3,e:2},{a:1,d:1,e:4},{a:1,d:-2,e:-1}],
+ zeros:[{a:2,d:1,e:-8},{a:1,d:-2,e:-9},{a:-1,d:3,e:4},{a:2,d:-1,e:-2}],
+ final:[{a:2,d:1,e:-8},{a:-1,d:-2,e:4},{a:.5,d:2,e:-2},{a:2,d:-2,e:-8}]
+};
+function getVariant(k){let x=localStorage.getItem(PREFIX+'variant_'+k);if(x===null){x=Math.floor(Math.random()*variants[k].length);localStorage.setItem(PREFIX+'variant_'+k,x)}return variants[k][+x]}
+function fmt(n){return Number.isInteger(n)?String(n):String(n).replace('.',',')} function signed(n){return n>=0?'+ '+fmt(n):'− '+fmt(-n)}
+function formula(v,showA=true){let A=showA?(v.a===1?'':v.a===-1?'−':fmt(v.a)+'·'):'';let inner=v.d===0?'x':v.d>0?'x − '+fmt(v.d):'x + '+fmt(-v.d);return \`f(x) = \${A}(\${inner})² \${v.e===0?'':signed(v.e)}\`.trim()}
+function nav(i,text='Weiter →'){return \`<div class="error">Noch nicht ganz! Bearbeite bzw. überprüfe zuerst alle Aufgaben dieser Seite.</div><div class="actions"><button class="btn" onclick="go(\${i-1})">← Zurück</button><button class="btn primary" onclick="next(\${i})">\${text}</button></div>\`}
+const pages=[
+\`<section class="page active"><span class="badge">Start</span><h2>Quadratische Funktionen wiederholen und erkunden</h2><p class="lead">Du kennst bereits die Scheitelpunktform <span class="formula">f(x) = (x − d)² + e</span>. In diesem Lernpfad untersuchst du, wie der zusätzliche Parameter <b>a</b> die Parabel verändert, und wiederholst wichtige Punkte, Scheitelpunktform und Nullstellen.</p><div class="instruction"><b>Arbeitsweise:</b> Du darfst allein oder zu zweit arbeiten. Wenn ihr zu zweit arbeitet, diskutiert eure Beobachtungen gemeinsam. <b>Jede Person füllt jedoch ihr eigenes analoges Arbeitsblatt aus.</b></div><div class="summary"><div class="sum"><b>Erkennen</b><br>charakteristische Punkte einer Parabel</div><div class="sum"><b>Erkunden</b><br>Wirkung von a, d und e</div><div class="sum"><b>Berechnen</b><br>Nullstellen aus der Scheitelpunktform</div></div><div class="actions"><span></span><button class="btn primary" onclick="go(1)">Lernpfad starten →</button></div></section>\`,
+\`<section class="page"><span class="badge">Grundlagen aktivieren</span><h2>Welche Punkte und Linien kennst du?</h2><p class="lead">Ordne den markierten Elementen im Koordinatensystem die passenden Fachbegriffe zu.</p><div class="grid"><div class="graphbox"><canvas id="gPoints" width="620" height="460"></canvas></div><div><div class="field"><label>A – tiefster/höchster Punkt der Parabel</label><select data-key="pA"><option value="">Bitte wählen</option><option>Scheitelpunkt</option><option>Nullstelle</option><option>y-Achsenabschnitt</option><option>Symmetrieachse</option></select></div><div class="field"><label>B – Schnittpunkt mit der x-Achse</label><select data-key="pB"><option value="">Bitte wählen</option><option>Scheitelpunkt</option><option>Nullstelle</option><option>y-Achsenabschnitt</option><option>Symmetrieachse</option></select></div><div class="field"><label>C – Schnittpunkt mit der y-Achse</label><select data-key="pC"><option value="">Bitte wählen</option><option>Scheitelpunkt</option><option>Nullstelle</option><option>y-Achsenabschnitt</option><option>Symmetrieachse</option></select></div><div class="field"><label>D – senkrechte Gerade durch den Scheitelpunkt</label><select data-key="pD"><option value="">Bitte wählen</option><option>Scheitelpunkt</option><option>Nullstelle</option><option>y-Achsenabschnitt</option><option>Symmetrieachse</option></select></div><button class="btn primary" onclick="checkPoints()">Zuordnung prüfen</button><div id="fbPoints" class="feedback"></div><input type="hidden" data-key="points_ok" required></div></div>\${nav(1)}</section>\`,
+\`<section class="page"><span class="badge">Scheitelpunktform</span><h2>Vom Graphen zur Funktionsgleichung</h2><p class="lead">Lies den Scheitelpunkt ab und gib die Funktionsgleichung an. In diesem Bereich ist <b>a = 1</b>.</p><div class="grid"><div class="graphbox"><canvas id="gVertex" width="620" height="460"></canvas></div><div><div class="field"><label>Scheitelpunkt</label><div style="display:flex;gap:8px;align-items:center">S ( <input type="number" step="1" data-key="vx" style="width:90px"> | <input type="number" step="1" data-key="vy" style="width:90px"> )</div></div><div class="field"><label>Funktionsgleichung in Scheitelpunktform</label><div class="formula">f(x) = (<input class="inline-formula-input" type="text" data-key="vInside" aria-label="Klammerterm">)² <input class="inline-formula-input" type="text" data-key="vOutside" aria-label="Term außerhalb der Klammer"></div><p>Trage die Terme direkt in die Funktionsgleichung ein, z. B. <b>x − 2</b> und <b>+ 3</b>.</p></div><button class="btn primary" onclick="checkVertex()">Antwort prüfen</button><div id="fbVertex" class="feedback"></div><input type="hidden" data-key="vertex_ok" required><div class="tip"><button onclick="toggleTip(this)">💡 Tipp anzeigen</button><div class="tiptext">Der Scheitelpunkt hat die Koordinaten <b>S(d | e)</b>. Achte darauf: In der Klammer steht bei einem positiven d ein Minuszeichen.</div></div></div></div>\${nav(2)}</section>\`,
+\`<section class="page"><span class="badge">Erkunden</span><h2>Parameterlabor: a, d und e</h2><p class="lead">Verändere die drei Parameter. Beobachte genau, was mit der Parabel passiert.</p><div class="lab"><div class="graphbox"><canvas id="gLab" width="680" height="500"></canvas></div><div><div class="formula" id="labFormula"></div><div class="slider"><label>a = <b id="aVal">1</b></label><input id="aSlider" type="range" min="-3" max="3" step="0.5" value="1"></div><div class="slider"><label>d = <b id="dVal">0</b></label><input id="dSlider" type="range" min="-5" max="5" step="1" value="0"></div><div class="slider"><label>e = <b id="eVal">0</b></label><input id="eSlider" type="range" min="-5" max="5" step="1" value="0"></div><button class="btn" onclick="resetLab()">↺ Ausgangslage</button></div></div><div class="instruction"><b>Arbeitsauftrag:</b> Verändere immer nur <u>einen</u> Parameter und setze die anderen zunächst auf ihre Ausgangswerte zurück. Prüfe deine Beobachtungen anschließend.</div><div class="grid"><div><h3>Parameter a</h3><div class="checklist"><label class="choice">a &gt; 0 → <select data-key="a1"><option></option><option>nach oben geöffnet</option><option>nach unten geöffnet</option></select></label><label class="choice">a &lt; 0 → <select data-key="a2"><option></option><option>nach oben geöffnet</option><option>nach unten geöffnet</option></select></label><label class="choice">|a| &gt; 1 → <select data-key="a3"><option></option><option>schmaler</option><option>breiter</option></select></label><label class="choice">0 &lt; |a| &lt; 1 → <select data-key="a4"><option></option><option>schmaler</option><option>breiter</option></select></label></div></div><div><h3>Parameter d und e</h3><div class="checklist"><label class="choice">d &gt; 0 → Verschiebung nach <select data-key="d1"><option></option><option>links</option><option>rechts</option></select></label><label class="choice">d &lt; 0 → Verschiebung nach <select data-key="d2"><option></option><option>links</option><option>rechts</option></select></label><label class="choice">e &gt; 0 → Verschiebung nach <select data-key="e1"><option></option><option>oben</option><option>unten</option></select></label><label class="choice">e &lt; 0 → Verschiebung nach <select data-key="e2"><option></option><option>oben</option><option>unten</option></select></label></div></div></div><div style="margin-top:16px"><button class="btn primary" onclick="checkLab()">Beobachtungen prüfen</button><div id="fbLab" class="feedback"></div><input type="hidden" data-key="lab_ok" required></div>\${nav(3,'Zum Checkpoint →')}</section>\`,
+\`<section class="page"><span class="badge">Checkpoint</span><h2>Checkpoint: Kannst du die Parameter deuten?</h2><div class="checkpoint"><p><b>Beantworte alle drei Fragen korrekt.</b> Danach sicherst du deine Erkenntnisse auf deinem analogen Arbeitsblatt.</p><div class="field"><label>1. Was bewirkt a = −2 gegenüber der Normalparabel?</label><select data-key="cp1"><option></option><option>Nach unten geöffnet und schmaler</option><option>Nach oben geöffnet und breiter</option><option>Nur nach links verschoben</option></select></div><div class="field"><label>2. Wohin verschiebt d = 3 die Parabel?</label><select data-key="cp2"><option></option><option>3 nach links</option><option>3 nach rechts</option><option>3 nach oben</option></select></div><div class="field"><label>3. Welchen Scheitelpunkt hat f(x) = 0,5·(x + 2)² − 4?</label><input type="text" data-key="cp3" placeholder="z. B. S(1|2)"></div><button class="btn green" onclick="checkCheckpoint()">Checkpoint prüfen</button><div id="fbCheckpoint" class="feedback"></div><input type="hidden" data-key="checkpoint_ok" required></div>\${nav(4)}</section>\`,
+\`<section class="page"><span class="badge">Nullstellen</span><h2>Nullstellen aus der Scheitelpunktform berechnen</h2><p class="lead">Bestimme die Nullstellen der gegebenen Funktion. Gib deinen Rechenweg schrittweise an.</p>
+<div style="margin:4px 0 18px"><button class="btn" id="exampleZerosBtn" onclick="toggleZeroExample()">👁 Beispiel anzeigen</button></div>
+<div id="zeroExample" class="example-panel">
+<h3 style="margin-top:0">Beispielrechnung</h3>
+<p>Gegeben sei <span class="formula">f(x) = 2·(x + 2)² − 8</span>. Die farbigen Terme zeigen, welche Äquivalenzumformung jeweils durchgeführt wird.</p>
+<div class="example-step"><div class="example-step-title">1. Nullsetzen</div><div class="example-equation">0 = 2·(x + 2)² <span class="eq-red">− 8</span> <span class="eq-op">|</span> <span class="eq-red">+ 8</span></div></div>
+<div class="example-step"><div class="example-step-title">2. Äquivalenzumformung</div><div class="example-equation"><span class="hover-calc" tabindex="0" data-calc="0 + 8 = 8">8</span> = <span class="eq-orange">2</span>·(x + 2)² <span class="eq-op">|</span> <span class="eq-orange">: 2</span></div></div>
+<div class="example-step"><div class="example-step-title">3. Durch den Faktor teilen</div><div class="example-equation"><span class="hover-calc" tabindex="0" data-calc="8 : 2 = 4">4</span> = (x + 2)² <span class="eq-op">|</span> <span class="eq-purple">√</span></div></div>
+<div class="example-step"><div class="example-step-title">4. Wurzel ziehen</div><div class="example-equation"><span class="eq-purple">±</span> <span class="hover-calc" tabindex="0" data-calc="√4 = 2">2</span> = x <span class="eq-green">+ 2</span> <span class="eq-op">|</span> <span class="eq-green">− 2</span></div></div>
+<div class="example-step"><div class="example-step-title">5. Nullstellen berechnen</div><div class="example-equation">x₁ = <span class="hover-calc" tabindex="0" data-calc="−2 − 2 = −4">−4</span>&nbsp;&nbsp;&nbsp;x₂ = <span class="hover-calc" tabindex="0" data-calc="2 − 2 = 0">0</span></div></div>
+<p class="example-note">💡 Fahre mit der Maus über die <u>gepunktet unterstrichenen Ergebnisse</u>, um die jeweilige Rechnung auf der linken Seite einzublenden.</p>
+</div>
+<div id="zeroFormula" class="formula"></div><div class="graphbox" style="margin:16px 0 22px"><canvas id="gZeros" width="900" height="380"></canvas></div><div><div class="field"><label>1. Setze die Funktionsgleichung gleich Null.</label><div class="zero-step"><input class="calc-input" type="text" data-key="z10" aria-label="Null"> = <input class="calc-input" type="text" data-key="z1a" aria-label="Wert a"> · (<input class="calc-wide" type="text" data-key="z1inner" aria-label="x minus d">)² <input class="calc-input" type="text" data-key="z1e" aria-label="Wert e"> <span class="transform">| <input class="calc-wide" type="text" data-key="z1op" aria-label="Äquivalenzumformung"></span></div></div><div class="field"><label>2. Führe die erste Äquivalenzumformung aus.</label><div class="zero-step"><input class="calc-input" type="text" data-key="z2left" aria-label="minus e"> = <input class="calc-input" type="text" data-key="z2a" aria-label="Wert a"> · (<input class="calc-wide" type="text" data-key="z2inner" aria-label="x minus d">)² <span class="transform">| <input class="calc-wide" type="text" data-key="z2op" aria-label="Äquivalenzumformung geteilt durch a"></span></div></div><div class="field"><label>3. Teile durch den Faktor vor der Klammer.</label><div class="zero-step"><input class="calc-input" type="text" data-key="z3left" aria-label="Ergebnis nach Division durch a"> = (<input class="calc-wide" type="text" data-key="z3innerDiv" aria-label="x minus d">)² <span class="transform">| √</span></div></div><div class="field"><label>4. Ziehe die Wurzel und löse anschließend nach x auf.</label><div class="zero-step">± <input class="calc-input" type="text" data-key="z3root" aria-label="Wurzelwert"> = <input class="calc-wide" type="text" data-key="z3inner" aria-label="x minus d"> <span class="transform">| <input class="calc-wide" type="text" data-key="z3op" aria-label="Äquivalenzumformung plus d"></span></div></div><div class="field"><label>5. Gib beide Nullstellen an.</label><div class="zero-step"><input class="calc-input result-input" type="text" data-key="zx1" aria-label="erste Nullstelle"> = x₁</div><div class="zero-step"><input class="calc-input result-input" type="text" data-key="zx2" aria-label="zweite Nullstelle"> = x₂</div></div><button class="btn primary" onclick="checkZeros()">Rechnung prüfen</button><div id="fbZeros" class="feedback"></div><input type="hidden" data-key="zeros_ok" required><div id="zeroSelfCheck" class="instruction" style="display:none;margin-top:22px"><h3 style="margin-top:0">Selbstkontrolle für Aufgabe 4</h3><p>Trage eine Funktion von deinem Arbeitsblatt und deine berechneten Nullstellen ein. Das Tool zeigt dir nur, ob deine Ergebnisse stimmen – <b>ohne Lösungsweg und ohne Lösungsvorgabe.</b></p><div class="field"><label>Funktionsgleichung</label><div class="formula-input">f(x) = <input class="calc-input" type="text" id="scA" aria-label="Parameter a"> · ( <input class="calc-wide" type="text" id="scInner" aria-label="x minus d"> )² <input class="calc-input" type="text" id="scE" aria-label="Parameter e"></div></div><div class="field"><label>Berechnete Nullstellen</label><div class="zero-step">x₁ = <input class="calc-input" type="text" id="scX1"> &nbsp;&nbsp; x₂ = <input class="calc-input" type="text" id="scX2"></div></div><button class="btn green" onclick="checkOwnZeros()">Ergebnisse überprüfen</button><div id="fbOwnZeros" class="feedback"></div></div><div class="tip"><button onclick="toggleTip(this)">💡 Tipp anzeigen</button><div class="tiptext">Setze zuerst f(x)=0. Isoliere anschließend den quadrierten Klammerterm. Beim Wurzelziehen entstehen zwei Möglichkeiten: +√… und −√….</div></div></div>\${nav(5,'Zur Lernzielkontrolle →')}</section>\`,
+\`<section class="page"><span class="badge">Lernzielkontrolle</span><h2>Alles an einer Parabel zusammenführen</h2><p class="solo"><b>Bearbeite diesen Abschnitt selbstständig.</b> Nutze deine Erkenntnisse aus dem Lernpfad und dein Arbeitsblatt.</p><div class="grid"><div class="graphbox"><canvas id="gFinal" width="620" height="460"></canvas></div><div><div class="field"><label>1. Scheitelpunkt</label><div>S ( <input type="number" data-key="fx" style="width:80px"> | <input type="number" data-key="fy" style="width:80px"> )</div></div><div class="field"><label>2. Parameter der Funktionsgleichung</label><div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap"><span>a = <strong id="finalAValue" class="given-value"></strong> <span style="font-weight:400;color:var(--muted)">(vorgegeben)</span></span><label>d=<input type="number" data-key="fd" style="width:85px"></label><label>e=<input type="number" data-key="fe" style="width:85px"></label></div></div><div class="field"><label>3. Funktionsgleichung in Scheitelpunktform</label><div class="formula-input">f(x) = <span id="finalAGivenFormula" class="given-value"></span> · ( <input type="text" data-key="fInside" placeholder="x − d" style="width:125px"> )² <input type="text" data-key="fOutside" placeholder="+ e" style="width:90px"></div></div><div class="field"><label>4. Öffnungsrichtung</label><select data-key="fopen"><option></option><option>nach oben</option><option>nach unten</option></select></div><div class="field"><label>5. Form gegenüber der Normalparabel</label><select data-key="fshape"><option></option><option>schmaler</option><option>gleich breit</option><option>breiter</option></select></div><div class="field"><label>6. Nullstellen (kleinere zuerst)</label><div style="display:flex;gap:8px"><label>x₁=<input type="number" step="0.01" data-key="fr1" style="width:90px"></label><label>x₂=<input type="number" step="0.01" data-key="fr2" style="width:90px"></label></div></div><button class="btn primary" onclick="checkFinal()">Lernzielkontrolle auswerten</button><div id="fbFinal" class="feedback"></div><input type="hidden" data-key="final_ok" required></div></div>\${nav(6,'Auswertung →')}</section>\`,
+\`<section class="page"><span class="badge">Abschluss</span><h2 class="center">Geschafft! 📈</h2><p class="lead">Du hast zentrale Eigenschaften quadratischer Funktionen wiederholt und die Wirkung der Parameter in <span class="formula">f(x)=a(x−d)²+e</span> untersucht.</p><div class="summary"><div class="sum"><b>a</b><br>Öffnung und Breite</div><div class="sum"><b>d</b><br>Verschiebung nach links/rechts</div><div class="sum"><b>e</b><br>Verschiebung nach oben/unten</div></div><div class="instruction"><b>Speichere deine Ergebnisse.</b> Die PDF enthält deine Eingaben, die bearbeiteten Varianten und die Ergebnisse der Lernzielkontrolle.</div><div class="actions"><button class="btn" onclick="go(6)">← Zurück</button><div><button class="btn primary" onclick="downloadPDF()">⬇ PDF herunterladen</button> <button class="btn" onclick="requestReset()">Lernpfad zurücksetzen</button></div></div></section>\`];
+document.getElementById('main').innerHTML=pages.join('');let current=+(localStorage.getItem(PREFIX+'current')||0);if(current<0||current>=pages.length)current=0;
+function save(el){if(el.dataset.key)localStorage.setItem(PREFIX+el.dataset.key,el.value)}function val(k){return localStorage.getItem(PREFIX+k)||''}function restore(){document.querySelectorAll('[data-key]').forEach(el=>{let v=localStorage.getItem(PREFIX+el.dataset.key);if(v!==null)el.value=v;el.addEventListener(el.tagName==='SELECT'?'change':'input',()=>{save(el);el.classList.remove('invalid')})});['studentName','studentClass'].forEach(id=>{let e=document.getElementById(id);e.value=localStorage.getItem(PREFIX+id)||'';e.addEventListener('input',()=>{localStorage.setItem(PREFIX+id,e.value);if(id==='studentName'&&e.value.trim()){e.classList.remove('name-error');document.getElementById('nameWarning').classList.remove('show')}})})}
+function progress(){let p=document.getElementById('progress');p.innerHTML='';labels.forEach((x,i)=>{let d=document.createElement('div');d.className='stepdot'+(i===current?' active':i<current?' done':'');d.textContent=x;p.appendChild(d)})}
+function go(i){document.querySelectorAll('.page').forEach((p,n)=>p.classList.toggle('active',n===i));current=i;localStorage.setItem(PREFIX+'current',i);progress();renderForPage(i);window.scrollTo({top:0,behavior:'smooth'})}
+function next(i){let page=document.querySelectorAll('.page')[i],req=[...page.querySelectorAll('[required]')],ok=req.every(e=>e.value.trim());req.forEach(e=>e.classList.toggle('invalid',!e.value.trim()));let err=page.querySelector('.error');if(err)err.classList.toggle('show',!ok);if(!ok)return;if(i===1&&localStorage.getItem(PREFIX+'analog_task_1')!=='yes'){document.getElementById('task1WorksheetNotice').classList.add('show');return}if(i===2&&localStorage.getItem(PREFIX+'analog_task_2')!=='yes'){document.getElementById('task2WorksheetNotice').classList.add('show');return}if(i===4&&localStorage.getItem(PREFIX+'analog_task_3')!=='yes'){document.getElementById('task3WorksheetNotice').classList.add('show');return}go(i+1)}
+function confirmAnalogTask(task,nextPage){localStorage.setItem(PREFIX+'analog_task_'+task,'yes');document.getElementById('task'+task+'WorksheetNotice').classList.remove('show');go(nextPage)}
+function closeAnalogTask(task){document.getElementById('task'+task+'WorksheetNotice').classList.remove('show')}
+function toggleZeroExample(){let panel=document.getElementById('zeroExample'),btn=document.getElementById('exampleZerosBtn'),show=!panel.classList.contains('show');panel.classList.toggle('show',show);btn.textContent=show?'✕ Beispiel ausblenden':'👁 Beispiel anzeigen';if(show)setTimeout(()=>panel.scrollIntoView({behavior:'smooth',block:'nearest'}),80)}
+function toggleTip(b){let t=b.nextElementSibling;t.style.display=t.style.display==='block'?'none':'block'}
+function setHidden(k,ok){let e=document.querySelector(\`[data-key="\${k}"]\`);e.value=ok?'ja':'';save(e)}function feedback(id,ok,msg){let f=document.getElementById(id);f.className='feedback show '+(ok?'ok':'bad');f.innerHTML=msg}
+function checkPoints(){let ok=val('pA')==='Scheitelpunkt'&&val('pB')==='Nullstelle'&&val('pC')==='y-Achsenabschnitt'&&val('pD')==='Symmetrieachse';setHidden('points_ok',ok);feedback('fbPoints',ok,ok?'✓ Richtig! Du kennst die charakteristischen Elemente der Parabel.':'Noch nicht ganz. Prüfe besonders, welche Achse jeweils geschnitten wird und welche Gerade die Parabel in zwei spiegelbildliche Hälften teilt.')}
+function cleanExpr(x){return String(x).toLowerCase().replace(/\\s/g,'').replace(/−/g,'-').replace(/,/g,'.')}function checkVertex(){let v=getVariant('vertex'),inside=cleanExpr(val('vInside')),outside=cleanExpr(val('vOutside')),expectedInside=v.d===0?'x':v.d>0?'x-'+v.d:'x+'+Math.abs(v.d),expectedOutside=v.e===0?'0':v.e>0?'+'+v.e:String(v.e);let ok=+val('vx')===v.d&&+val('vy')===v.e&&inside===expectedInside&&(outside===expectedOutside||(v.e>0&&outside===String(v.e)));setHidden('vertex_ok',ok);feedback('fbVertex',ok,ok?\`✓ Richtig! S(\${v.d}|\${v.e}) und \${formula(v,false)}.\`:'Noch nicht ganz. Lies zuerst S(d|e) ab und übertrage d und e anschließend in die Scheitelpunktform.')}
+function checkLab(){let ans={a1:'nach oben geöffnet',a2:'nach unten geöffnet',a3:'schmaler',a4:'breiter',d1:'rechts',d2:'links',e1:'oben',e2:'unten'};let ok=Object.entries(ans).every(([k,v])=>val(k)===v);setHidden('lab_ok',ok);feedback('fbLab',ok,ok?'✓ Alle Beobachtungen sind richtig. Du bist bereit für den Checkpoint.':'Mindestens eine Aussage stimmt noch nicht. Nutze die Schieberegler erneut und verändere jeweils nur einen Parameter.')}
+function norm(s){return s.toLowerCase().replace(/\\s/g,'').replace('−','-')}function checkCheckpoint(){let ok=val('cp1')==='Nach unten geöffnet und schmaler'&&val('cp2')==='3 nach rechts'&&['s(-2|-4)','s(-2;-4)','(-2|-4)'].includes(norm(val('cp3')));setHidden('checkpoint_ok',ok);feedback('fbCheckpoint',ok,ok?'✓ Checkpoint geschafft! Klicke auf „Weiter“, um Aufgabe 3 auf deinem analogen Arbeitsblatt zu bearbeiten.':'Noch nicht ganz. Prüfe die drei Parameter noch einmal.');let wn=document.getElementById('worksheetNotice');if(wn)wn.style.display='none'}
+function confirmWorksheet(){localStorage.setItem(PREFIX+'worksheet_confirmed','yes');document.getElementById('worksheetConfirm').classList.remove('show');go(5)}function closeWorksheetConfirm(){document.getElementById('worksheetConfirm').classList.remove('show')}function roots(v){let q=-v.e/v.a;if(q<0)return[];let r=Math.sqrt(q);return [v.d-r,v.d+r].sort((a,b)=>a-b)}function near(a,b){return Math.abs(+a-b)<.011}
+function normMath(x){return String(x??'').trim().toLowerCase().replaceAll(' ','').replaceAll('−','-').replaceAll('–','-').replaceAll('·','*').replaceAll(',','.').replaceAll('²','^2')}
+function oneOf(k,answers){let el=document.querySelector(\`[data-key="\${k}"]\`),got=normMath(val(k)),ok=answers.map(normMath).includes(got);if(el){el.classList.remove('valid','invalid');el.classList.add(ok?'valid':'invalid')}return ok}
+function numField(k,n){let el=document.querySelector(\`[data-key="\${k}"]\`),got=normMath(val(k)),ok=got!==''&&Math.abs(Number(got)-n)<.011;if(el){el.classList.remove('valid','invalid');el.classList.add(ok?'valid':'invalid')}return ok}
+function innerAnswers(d){return d===0?['x']:d>0?[\`x-\${d}\`,\`x−\${d}\`]:[\`x+\${-d}\`]}
+function signedAnswers(n){return n>=0?[\`+\${n}\`,String(n)]:[String(n)]}
+function rootPairFields(k1,k2,rs){
+ let e1=document.querySelector(\`[data-key="\${k1}"]\`),e2=document.querySelector(\`[data-key="\${k2}"]\`);
+ let t1=e1.value.trim().replace(',', '.'),t2=e2.value.trim().replace(',', '.');
+ let v1=Number(t1),v2=Number(t2),filled1=t1!==''&&Number.isFinite(v1),filled2=t2!==''&&Number.isFinite(v2);
+ let ok1=filled1&&rs.some(r=>Math.abs(v1-r)<.011),ok2=filled2&&rs.some(r=>Math.abs(v2-r)<.011);
+ let distinct=rs.length>1&&Math.abs(rs[0]-rs[1])>1e-6;
+ if(ok1&&ok2&&distinct&&Math.abs(v1-v2)<.011){ok1=false;ok2=false;}
+ [e1,e2].forEach((el,i)=>{let ok=i===0?ok1:ok2;el.classList.remove('valid','invalid');el.classList.add(ok?'valid':'invalid')});
+ return ok1&&ok2;
+}
+function checkZeros(){let v=getVariant('zeros'),left=-v.e,root=Math.sqrt(left/v.a),rs=roots(v),inner=innerAnswers(v.d),op1=v.e>0?\`-\${v.e}\`:\`+\${-v.e}\`,op3=v.d>0?\`+\${v.d}\`:\`-\${-v.d}\`;let checks=[numField('z10',0),numField('z1a',v.a),oneOf('z1inner',inner),oneOf('z1e',signedAnswers(v.e)),oneOf('z1op',[op1]),numField('z2left',left),numField('z2a',v.a),oneOf('z2inner',inner),oneOf('z2op',[v.a===1?':1':\`:\${v.a}\`]),numField('z3left',left/v.a),oneOf('z3innerDiv',inner),numField('z3root',root),oneOf('z3inner',inner),oneOf('z3op',[op3]),rootPairFields('zx1','zx2',rs)];let ok=checks.every(Boolean);setHidden('zeros_ok',ok);feedback('fbZeros',ok,ok?'✓ Richtig gerechnet! Alle Rechenschritte und beide Nullstellen stimmen. Bearbeite jetzt Aufgabe 4 auf deinem Arbeitsblatt.':'Prüfe die rot markierten Felder. Grüne Felder sind bereits korrekt. Du kannst „Rechnung prüfen“ jederzeit erneut verwenden.');if(ok){localStorage.setItem(PREFIX+'zero_selfcheck_unlocked','yes');let tool=document.getElementById('zeroSelfCheck');if(tool)tool.style.display='block';document.getElementById('zerosWorksheetNotice').classList.add('show')}}
+function closeZerosWorksheetNotice(){document.getElementById('zerosWorksheetNotice').classList.remove('show');let tool=document.getElementById('zeroSelfCheck');if(tool){tool.style.display='block';setTimeout(()=>tool.scrollIntoView({behavior:'smooth',block:'center'}),120)}}
+function parseOwnInner(raw){let t=String(raw||'').trim().toLowerCase().replaceAll(' ','').replaceAll('−','-').replaceAll('–','-');if(t==='x')return 0;let m=t.match(/^x([+-])(\\d+(?:[.,]\\d+)?)$/);if(!m)return null;let n=Number(m[2].replace(',','.'));return m[1]==='-'?n:-n}
+function markOwn(el,ok){el.classList.remove('valid','invalid');el.classList.add(ok?'valid':'invalid');return ok}
+function checkOwnZeros(){let aEl=document.getElementById('scA'),iEl=document.getElementById('scInner'),eEl=document.getElementById('scE'),x1El=document.getElementById('scX1'),x2El=document.getElementById('scX2');let a=Number(normMath(aEl.value)),d=parseOwnInner(iEl.value),e=Number(normMath(eEl.value)),aok=Number.isFinite(a)&&a!==0,dok=d!==null,eok=Number.isFinite(e);markOwn(aEl,aok);markOwn(iEl,dok);markOwn(eEl,eok);if(!(aok&&dok&&eok)){markOwn(x1El,false);markOwn(x2El,false);feedback('fbOwnZeros',false,'Prüfe zuerst die eingegebene Funktionsgleichung.');return}let q=-e/a;if(q<0){markOwn(x1El,false);markOwn(x2El,false);feedback('fbOwnZeros',false,'Diese Funktion besitzt keine reellen Nullstellen. Prüfe, ob du die Funktion vom Arbeitsblatt richtig übertragen hast.');return}let r=Math.sqrt(q),expected=[d-r,d+r],g1=Number(normMath(x1El.value)),g2=Number(normMath(x2El.value)),pair=Number.isFinite(g1)&&Number.isFinite(g2)&&((near(g1,expected[0])&&near(g2,expected[1]))||(near(g1,expected[1])&&near(g2,expected[0]))),x1ok=Number.isFinite(g1)&&expected.some(x=>near(g1,x)),x2ok=Number.isFinite(g2)&&expected.some(x=>near(g2,x));markOwn(x1El,x1ok&&pair);markOwn(x2El,x2ok&&pair);feedback('fbOwnZeros',pair,pair?'✓ Deine beiden Nullstellen sind korrekt.':'✗ Die eingetragenen Nullstellen sind nicht korrekt. Überprüfe deine Berechnung auf dem Arbeitsblatt.')}
+function checkFinal(){let v=getVariant('final'),rs=roots(v),shape=Math.abs(v.a)>1?'schmaler':Math.abs(v.a)<1?'breiter':'gleich breit',open=v.a>0?'nach oben':'nach unten';let expectedInside=v.d===0?'x':v.d>0?'x-'+fmt(v.d):'x+'+fmt(-v.d),expectedOutside=v.e===0?'0':(v.e>0?'+'+fmt(v.e):fmt(v.e));let checks=[numField('fx',v.d),numField('fy',v.e),numField('fd',v.d),numField('fe',v.e),oneOf('fInside',[expectedInside]),oneOf('fOutside',[expectedOutside,v.e===0?'':' '+expectedOutside])];function choiceField(k,expected){let el=document.querySelector(\`[data-key="\${k}"]\`),ok=val(k)===expected;if(el){el.classList.remove('valid','invalid');el.classList.add(ok?'valid':'invalid')}return ok}checks.push(choiceField('fopen',open),choiceField('fshape',shape));let r1=document.querySelector('[data-key="fr1"]'),r2=document.querySelector('[data-key="fr2"]'),g1=normMath(val('fr1')),g2=normMath(val('fr2')),n1=g1===''?NaN:Number(g1),n2=g2===''?NaN:Number(g2),sortedRoots=[...rs].sort((a,b)=>a-b),r1ok=Number.isFinite(n1)&&Math.abs(n1-sortedRoots[0])<.011,r2ok=Number.isFinite(n2)&&Math.abs(n2-sortedRoots[sortedRoots.length-1])<.011;[ [r1,r1ok],[r2,r2ok] ].forEach(([el,ok])=>{if(el){el.classList.remove('valid','invalid');el.classList.add(ok?'valid':'invalid')}});checks.push(r1ok,r2ok);let ok=checks.every(Boolean);setHidden('final_ok',ok);feedback('fbFinal',ok,ok?'✓ Lernziel erreicht! Du hast die Parabel vollständig und korrekt beschrieben.':'Noch nicht alles stimmt. Die farbigen Felder zeigen dir direkt, welche Angaben richtig oder falsch sind.')}
+function drawGraph(id,v,marks={}){let c=document.getElementById(id);if(!c)return;let ctx=c.getContext('2d'),W=c.width,H=c.height,xmin=-6,xmax=6,ymin=-8,ymax=8,X=x=>(x-xmin)/(xmax-xmin)*W,Y=y=>H-(y-ymin)/(ymax-ymin)*H;ctx.clearRect(0,0,W,H);ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);ctx.strokeStyle='#e1e9ef';ctx.lineWidth=1;for(let x=-6;x<=6;x++){ctx.beginPath();ctx.moveTo(X(x),0);ctx.lineTo(X(x),H);ctx.stroke()}for(let y=-8;y<=8;y++){ctx.beginPath();ctx.moveTo(0,Y(y));ctx.lineTo(W,Y(y));ctx.stroke()}ctx.strokeStyle='#60758a';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(0,Y(0));ctx.lineTo(W,Y(0));ctx.stroke();ctx.beginPath();ctx.moveTo(X(0),0);ctx.lineTo(X(0),H);ctx.stroke();ctx.fillStyle='#60758a';ctx.font='13px system-ui';for(let x=-6;x<=6;x++)if(x)ctx.fillText(x,X(x)+3,Y(0)-5);for(let y=-8;y<=8;y+=2)if(y)ctx.fillText(y,X(0)+5,Y(y)-3);ctx.strokeStyle='#0878c9';ctx.lineWidth=4;ctx.beginPath();let first=true;for(let px=0;px<=W;px++){let x=xmin+px/W*(xmax-xmin),y=v.a*(x-v.d)*(x-v.d)+v.e;if(y<ymin-2||y>ymax+2){first=true;continue}if(first){ctx.moveTo(px,Y(y));first=false}else ctx.lineTo(px,Y(y))}ctx.stroke();if(marks.sym){ctx.setLineDash([7,6]);ctx.strokeStyle='#7a4dd8';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(X(v.d),0);ctx.lineTo(X(v.d),H);ctx.stroke();ctx.setLineDash([])}function dot(x,y,label,color){ctx.fillStyle=color;ctx.beginPath();ctx.arc(X(x),Y(y),7,0,Math.PI*2);ctx.fill();ctx.font='bold 16px system-ui';ctx.fillText(label,X(x)+10,Y(y)-10)}if(marks.vertex)dot(v.d,v.e,marks.vertex,'#e07a1f');if(marks.roots){let rs=roots(v);if(rs.length){dot(rs[0],0,marks.roots,'#1f9d62');if(Math.abs(rs[1]-rs[0])>.01)dot(rs[1],0,marks.roots2||'', '#1f9d62')}}if(marks.yint)dot(0,v.a*v.d*v.d+v.e,marks.yint,'#d63230')}
+function renderForPage(i){if(i===5&&localStorage.getItem(PREFIX+'zero_selfcheck_unlocked')==='yes'){let t=document.getElementById('zeroSelfCheck');if(t)t.style.display='block';}if(i===1)drawGraph('gPoints',getVariant('points'),{vertex:'A',roots:'B',yint:'C',sym:true});if(i===2)drawGraph('gVertex',getVariant('vertex'),{vertex:'S'});if(i===3)updateLab();if(i===5){let v=getVariant('zeros');document.getElementById('zeroFormula').textContent=formula(v);drawGraph('gZeros',v,{roots:'N₁',roots2:'N₂',vertex:'S'})}if(i===6){let v=getVariant('final'),aText=fmt(v.a);document.getElementById('finalAValue').textContent=aText;document.getElementById('finalAGivenFormula').textContent=aText;drawGraph('gFinal',v,{vertex:'S',roots:'N₁',roots2:'N₂'})}}
+function updateLab(){let a=+document.getElementById('aSlider').value;if(a===0){a=.5;document.getElementById('aSlider').value=a}let d=+document.getElementById('dSlider').value,e=+document.getElementById('eSlider').value;document.getElementById('aVal').textContent=fmt(a);document.getElementById('dVal').textContent=d;document.getElementById('eVal').textContent=e;document.getElementById('labFormula').textContent=formula({a,d,e});drawGraph('gLab',{a,d,e},{vertex:'S',sym:true})}function resetLab(){aSlider.value=1;dSlider.value=0;eSlider.value=0;updateLab()}['aSlider','dSlider','eSlider'].forEach(id=>document.getElementById(id).addEventListener('input',updateLab));
+function requestReset(){if(confirm('Lernpfad wirklich zurücksetzen? Alle Eingaben und zufällig gewählten Varianten werden gelöscht.')){Object.keys(localStorage).filter(k=>k.startsWith(PREFIX)).forEach(k=>localStorage.removeItem(k));location.reload()}}
+function pdfEscape(s){return String(s??'').replace(/\\\\/g,'\\\\\\\\').replace(/\\(/g,'\\\\(').replace(/\\)/g,'\\\\)').replace(/\\r?\\n/g,' ')}
+function pdfMath(s){return String(s??'').replace(/\\^2/g,'²').replace(/x1/g,'x₁').replace(/x2/g,'x₂').replace(/\\*/g,'·').replace(/-/g,'−').replace(/\\|/g,' | ').replace(/\\s+/g,' ').trim()}
+function pdfFormula(v,name='f'){let A=v.a===1?'':v.a===-1?'−':fmt(v.a)+'·';let inner=v.d===0?'x':v.d>0?'x − '+fmt(v.d):'x + '+fmt(-v.d);let tail=v.e===0?'':v.e>0?' + '+fmt(v.e):' − '+fmt(-v.e);return \`\${name}(x) = \${A}(\${inner})²\${tail}\`;}
+function pdfVertex(x,y){return \`S(\${pdfMath(x)} | \${pdfMath(y)})\`}
+function pdfRootLabel(i,v){return \`x\${i===1?'₁':'₂'} = \${pdfMath(v)}\`}
+function latin1Bytes(s){const map={'€':128,'„':132,'…':133,'“':147,'”':148,'–':150,'—':151,'−':45,'·':183,'²':178,'₁':49,'₂':50,'√':63,'±':177};let a=[];for(const ch of s){let c=ch.charCodeAt(0);a.push(c<=255?c:(map[ch]??63))}return new Uint8Array(a)}
+function wrapText(s,max=82){let w=String(s||'—').replace(/\\s+/g,' ').trim().split(' '),L=[],l='';for(const x of w){if((l+' '+x).trim().length>max&&l){L.push(l);l=x}else l=(l+' '+x).trim()}if(l)L.push(l);return L.length?L:['—']}
+function downloadPDF(){let name=studentName.value.trim();if(!name){studentName.classList.remove('name-error');void studentName.offsetWidth;studentName.classList.add('name-error');nameWarning.classList.add('show');studentName.focus();return}studentName.classList.remove('name-error');nameWarning.classList.remove('show');let group=studentClass.value.trim()||'—',pv=getVariant('vertex'),zv=getVariant('zeros'),fv=getVariant('final');let vInside=pdfMath(val('vInside')),vOutside=pdfMath(val('vOutside'));let fInside=pdfMath(val('fInside')),fOutside=pdfMath(val('fOutside'));let sections=[['Grundlagen',[\`Zuordnung: A = \${val('pA')}; B = \${val('pB')}; C = \${val('pC')}; D = \${val('pD')}\`]],['Scheitelpunktform',[\`Variante: \${pdfFormula(pv)}\`,\`Eingabe Scheitelpunkt: \${pdfVertex(val('vx'),val('vy'))}\`,\`Funktionsgleichung: f(x) = (\${vInside})² \${vOutside}\`]],['Parameterlabor',[\`a > 0: \${val('a1')}; a < 0: \${val('a2')}; |a| > 1: \${val('a3')}; 0 < |a| < 1: \${val('a4')}\`,\`d > 0: \${val('d1')}; d < 0: \${val('d2')}; e > 0: \${val('e1')}; e < 0: \${val('e2')}\`]],['Checkpoint',[\`1. \${val('cp1')}\`,\`2. \${val('cp2')}\`,\`3. \${pdfMath(val('cp3'))}\`]],['Nullstellen',[\`Funktion: \${pdfFormula(zv)}\`,\`1. Nullsetzen: 0 = \${pdfMath(val('z1a'))}·(\${pdfMath(val('z1inner'))})² \${pdfMath(val('z1e'))}\`,\`2. Äquivalenzumformung: \${pdfMath(val('z2left'))} = \${pdfMath(val('z2a'))}·(\${pdfMath(val('z2inner'))})²\`,\`3. Faktor teilen: \${pdfMath(val('z3left'))} = (\${pdfMath(val('z3innerDiv'))})²\`,\`4. Wurzel ziehen: ±\${pdfMath(val('z3root'))} = \${pdfMath(val('z3inner'))}\`,\`5. Nullstellen: \${pdfRootLabel(1,val('zx1'))}; \${pdfRootLabel(2,val('zx2'))}\`]],['Lernzielkontrolle',[\`Funktion/Variante: \${pdfFormula(fv)}\`,\`\${pdfVertex(val('fx'),val('fy'))}; a = \${fmt(fv.a)}; d = \${pdfMath(val('fd'))}; e = \${pdfMath(val('fe'))}\`,\`Funktionsgleichung: f(x) = \${fmt(fv.a)}·(\${fInside})² \${fOutside}\`,\`Öffnung: \${val('fopen')}; Form: \${val('fshape')}\`,\`Nullstellen: \${pdfRootLabel(1,val('fr1'))}; \${pdfRootLabel(2,val('fr2'))}\`,\`Auswertung: \${val('final_ok')==='ja'?'vollständig korrekt':'noch nicht vollständig korrekt'}\`]]];let W=595,H=842,M=42,pages=[],ops=[],y=H-M,C={navy:[.051,.161,.267],blue:[.031,.471,.788],paper:[.965,.98,.99],muted:[.35,.45,.54],white:[1,1,1],green:[.12,.62,.38]},rgb=c=>\`\${c[0]} \${c[1]} \${c[2]}\`;function rect(x,y,w,h,c){ops.push(\`\${rgb(c)} rg\`,\`\${x} \${y} \${w} \${h} re f\`)}function text(t,x,y,s=10,b=false,c=C.navy){ops.push('BT',\`/\${b?'F2':'F1'} \${s} Tf\`,\`\${rgb(c)} rg\`,\`1 0 0 1 \${x} \${y} Tm\`,\`(\${pdfEscape(t)}) Tj\`,'ET')}function start(){ops=[];y=H-M;rect(0,0,W,H,C.white);rect(0,H-105,W,105,C.navy);text('Parabellabor – Quadratische Funktionen',M,H-55,19,true,C.white);text(name,M,H-78,10,true,C.white);text('Klasse/Kurs: '+group,360,H-78,9,false,C.white);y=H-130}function end(){pages.push(ops.join('\\n'))}function ensure(h){if(y-h<M+30){end();start()}}function section(title,rows){ensure(55+rows.length*45);text(title,M,y,14,true);y-=22;for(const row of rows){let lines=wrapText(row,72),h=20+lines.length*13;ensure(h+8);rect(M,y-h+8,W-2*M,h,C.paper);let yy=y-10;for(const ln of lines){text(ln,M+12,yy,10);yy-=13}y-=h+8}y-=5}start();sections.forEach(s=>section(s[0],s[1]));ensure(55);rect(M,y-40,W-2*M,40,[.91,.97,.94]);text('Ergebnisse aus dem interaktiven Lernpfad',M+12,y-17,9,true,C.green);text('© Briec Gärtner (2026)',M+12,y-30,8,false,C.muted);end();let objs=[null,'<< /Type /Catalog /Pages 2 0 R >>','','<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>','<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>'],ids=[];pages.forEach(content=>{let b=latin1Bytes(content),cid=objs.length;objs.push(\`<< /Length \${b.length} >>\\nstream\\n\${content}\\nendstream\`);let pid=objs.length;ids.push(pid);objs.push(\`<< /Type /Page /Parent 2 0 R /MediaBox [0 0 \${W} \${H}] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents \${cid} 0 R >>\`)});objs[2]=\`<< /Type /Pages /Kids [\${ids.map(i=>i+' 0 R').join(' ')}] /Count \${ids.length} >>\`;let chunks=[latin1Bytes('%PDF-1.4\\n%âãÏÓ\\n')],offs=[0],pos=chunks[0].length;for(let i=1;i<objs.length;i++){offs[i]=pos;let b=latin1Bytes(\`\${i} 0 obj\\n\${objs[i]}\\nendobj\\n\`);chunks.push(b);pos+=b.length}let xref=pos,xr=\`xref\\n0 \${objs.length}\\n0000000000 65535 f \\n\`;for(let i=1;i<objs.length;i++)xr+=String(offs[i]).padStart(10,'0')+' 00000 n \\n';xr+=\`trailer\\n<< /Size \${objs.length} /Root 1 0 R >>\\nstartxref\\n\${xref}\\n%%EOF\`;chunks.push(latin1Bytes(xr));let blob=new Blob(chunks,{type:'application/pdf'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='Quadratische Funktionen - '+name.replace(/[\\\\/:*?"<>|]/g,'_')+'.pdf';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),2000);localStorage.setItem(PREFIX+'pdf','yes');setTimeout(()=>pdfNotice.classList.add('show'),250)}
+function closePdfNotice(){pdfNotice.classList.remove('show')}
+restore();progress();go(current);
+<\/script></body></html>`
+      },
+
+      merkblatt: {
+        title: "Merkblatt: Quadratische Gleichungen – Übersicht",
+        filename: "Merkblatt_Quadratische_Gleichungen_Uebersicht.html",
+        getHtml: () => `<!DOCTYPE html>
+<html lang="de"><head><meta charset="UTF-8"><title>Merkblatt: Quadratische Gleichungen – Klasse 9</title><style>
+@page{size:A4 landscape;margin:0}*,*::before,*::after{box-sizing:border-box}html,body{margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:#1e293b;background-color:#ffffff;-webkit-print-color-adjust:exact;print-color-adjust:exact}body{padding:0;margin:0 auto;background:transparent!important}.page{width:297mm;height:210mm;margin:0 auto;padding:5mm 8mm 4mm 8mm;background-color:#ffffff;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden}.page-content{flex:1 1 0;min-height:0;display:flex;flex-direction:column;justify-content:flex-start;gap:10px}.math{font-family:"Cambria Math","Times New Roman",Georgia,serif;font-style:italic;font-weight:600;letter-spacing:0.02em}.math-bold{font-family:"Cambria Math","Times New Roman",Georgia,serif;font-weight:bold}.input-box{display:inline-block;border:1.5px dashed #2563eb;background:#ffffff;vertical-align:middle;border-radius:4px;height:22px;font-family:"Cambria Math","Times New Roman",Georgia,serif;font-size:11pt;text-align:center;color:#0f172a;outline:none;padding:0 4px;transition:all 0.2s ease}.input-box:focus{border:2px solid #2563eb;background:#f0f7ff}.input-box.correct{border:2px solid #16a34a!important;background-color:#dcfce7!important;color:#15803d!important;font-weight:bold}.input-box.incorrect{border:2px solid #dc2626!important;background-color:#fee2e2!important;color:#b91c1c!important}.header{display:flex;align-items:baseline;justify-content:space-between;border-bottom:2.5px solid #2563eb;padding-bottom:4px;margin-bottom:0}.header-titles h1{margin:0;font-size:21.5pt;font-weight:800;color:#1e3a8a;line-height:1.1}.header-titles .subtitle{font-size:11pt;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:0.05em;margin-top:2px}.section-card{border:1.5px solid #cbd5e1;border-radius:6px;background:#ffffff;overflow:hidden}.section-card + .section-card{margin-top:18px}.section-header{background:#f1f5f9;padding:5px 12px;font-size:12pt;font-weight:700;color:#0f172a;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #cbd5e1}.grid-rq{display:grid;grid-template-columns:1fr 1.08fr;gap:12px;padding:8px 10px}.calc-box{background:#fafafa;border:1px solid #e2e8f0;border-radius:5px;padding:8px 10px;font-size:11.5pt}.calc-title{font-weight:700;color:#334155;font-size:12pt;margin-bottom:5px;border-bottom:1px dashed #cbd5e1;padding-bottom:3px}.step-table{border-collapse:collapse;font-size:11.5pt!important}.step-table td{padding:2.5px 3px;vertical-align:middle}.step-table td:first-child{white-space:nowrap;padding-right:6px}.step-op{text-align:left;color:#000000;font-weight:normal;font-size:11.5pt;white-space:nowrap;padding-left:5px;padding-right:8px}.step-note{font-size:10.5pt;color:#000000;font-weight:normal;padding-left:6px;white-space:nowrap}.lsg-table{width:100%;border-collapse:collapse;font-size:10.5pt;margin-top:5px}.lsg-table th{background:#e2e8f0;color:#334155;border:1px solid #cbd5e1;padding:3px 6px;text-align:left;font-weight:700;white-space:nowrap}.lsg-table td{border:1px solid #cbd5e1;padding:3px 6px;text-align:left;background:#f8fafc;white-space:nowrap}.grid-gq{display:grid;grid-template-columns:1fr 1.35fr;gap:12px;padding:8px 10px}.pq-formula-card{background:#fafafa;border:1px solid #e2e8f0;border-radius:5px;padding:8px 10px;display:flex;flex-direction:column;justify-content:space-between}.formula-display{text-align:center;background:#eff6ff;border:1.5px solid #bfdbfe;border-radius:5px;padding:6px 10px;margin:4px 0 2px 0;font-size:14.5pt;color:#1e3a8a}.sqrt{display:inline-flex;align-items:stretch;vertical-align:middle;margin:0 1px;position:relative}.sqrt-surd{width:9px;height:auto;align-self:stretch;flex-shrink:0;display:block;overflow:visible}.radicand{border-top:1.3px solid currentColor;padding:2px 3px 0 2px;margin-left:-0.5px;display:inline-block;vertical-align:middle;line-height:1.15}.fraction{display:inline-block;vertical-align:middle;text-align:center;font-size:0.88em;padding:0 1px}.fraction > span{display:block;padding:0.5px}.fraction span.bottom{border-top:1px solid currentColor}.toolbar-container{background:#f8fafc;border-bottom:2px solid #e2e8f0;padding:8px 14px;margin-bottom:8px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}.toolbar{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}.toolbar-group{display:flex;align-items:center;gap:8px}.btn{border:none;padding:7px 14px;font-size:10pt;font-weight:600;border-radius:5px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:background 0.15s ease}.btn-check{background-color:#16a34a;color:#ffffff}.btn-check:hover{background-color:#15803d}.btn-reset{background-color:#e2e8f0;color:#334155}.btn-reset:hover{background-color:#cbd5e1}.btn-teacher{background-color:#7c3aed;color:#ffffff}.btn-teacher:hover{background-color:#6d28d9}.btn-download{background-color:#2563eb;color:#ffffff}.btn-download:hover{background-color:#1d4ed8}.score-badge{font-size:10pt;font-weight:700;padding:4px 10px;border-radius:4px;display:inline-block}.score-success{background-color:#dcfce7;color:#166534;border:1px solid #bbf7d0}.score-partial{background-color:#fef9c3;color:#854d0e;border:1px solid #fef08a}.teacher-panel{background:#ffffff;border:2px solid #7c3aed;border-radius:6px;padding:12px;margin-top:8px;display:none}.teacher-panel h3{font-size:11pt;color:#6d28d9;margin:0 0 6px 0}.teacher-actions{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap}.teacher-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:8px;max-height:190px;overflow-y:auto;border:1px solid #e2e8f0;padding:8px;background:#fdfdfd;border-radius:4px}.teacher-item{font-size:9pt;display:flex;flex-direction:column;gap:2px}.teacher-item input{border:1px solid #cbd5e1;border-radius:3px;padding:3px 6px;font-size:9.5pt}
+</style></head><body>
+<div class="toolbar-container no-print" contenteditable="false">
+  <div class="toolbar">
+    <div class="toolbar-group">
+      <button type="button" class="btn btn-check" onclick="checkAnswers()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        Eingaben überprüfen
+      </button>
+      <button type="button" class="btn btn-reset" onclick="resetAnswers()">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><polyline points="3 3 3 8 8 8"></polyline></svg>
+        Zurücksetzen
+      </button>
+      <span id="score-display" class="score-badge score-partial" style="display:inline-block;">0 von 15 Feldern richtig (0%)</span>
+    </div>
+    <div class="toolbar-group">
+      <button type="button" class="btn btn-teacher" onclick="toggleTeacherPanel()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 14c-4.418 0-8 1.79-8 4v2h16v-2c0-2.21-3.582-4-8-4z"></path><circle cx="12" cy="7" r="4"></circle></svg>
+        Lehrer-Modus
+      </button>
+    </div>
+  </div>
+  <div id="teacher-panel" class="teacher-panel">
+    <h3>👨‍🏫 Lehrer-Modus: Musterlösungen verwalten</h3>
+    <div class="teacher-actions">
+      <button type="button" class="btn btn-teacher" onclick="saveTeacherSolutionsFromPanel()">✓ Speichern</button>
+      <button type="button" class="btn btn-reset" onclick="fillSolutionsIntoInputs()">Lösung eintragen</button>
+      <button type="button" class="btn btn-reset" onclick="toggleTeacherPanel()">✕ Schließen</button>
+    </div>
+    <div id="teacher-fields-grid" class="teacher-grid"></div>
+  </div>
+</div>
+<div contenteditable="true">
+  <section class="page"><div class="page-content">
+    <header class="header">
+      <div class="header-titles">
+        <h1>Lösen quadratischer Gleichungen</h1>
+        <div class="subtitle">Klasse 9 • Übersicht</div>
+      </div>
+    </header>
+    <section class="section-card">
+      <div class="section-header"><span>1. quadratische Gleichungen der Form: <span class="math">x² + q = 0</span></span></div>
+      <div class="grid-rq">
+        <div class="calc-box">
+          <table class="step-table"><tbody>
+            <tr><td><span class="math">x² - 4 = 0</span></td><td class="step-op">| + 4</td></tr>
+            <tr><td><span class="math">x² = 4</span></td><td class="step-op">| ± √</td></tr>
+            <tr><td colspan="2" style="padding-top:4px;padding-bottom:6px;">Ergebnis: <input type="text" class="input-box" data-id="rq_erg" style="width:145px;height:22px;" placeholder="z. B. x₁ = +2; x₂ = -2"></td></tr>
+          </tbody></table>
+          <table class="lsg-table"><thead><tr><th>Bedingung</th><th>Lösungsanzahl</th><th>Beispiel</th></tr></thead><tbody>
+            <tr><td><strong><span class="math">q &lt; 0</span></strong></td><td><strong>2 Lösungen</strong></td><td><span class="math">x² = 4 → <input type="text" class="input-box" data-id="rq_tab_1" style="width:105px;height:22px;" placeholder="x = ±2"></span></td></tr>
+            <tr><td><strong><input type="text" class="input-box" data-id="rq_tab_2" style="width:80px;height:22px;display:block;margin:0 auto;" placeholder="q = 0"></strong></td><td><strong>1 Lösung</strong></td><td><span class="math">x² = 0 → x = 0</span></td></tr>
+            <tr><td><strong><span class="math">q &gt; 0</span></strong></td><td><strong><input type="text" class="input-box" data-id="rq_tab_3" style="width:130px;height:22px;display:block;margin:0 auto;" placeholder="keine Lösung"></strong></td><td><span class="math">x² = -4</span> (keine Wurzel)</td></tr>
+          </tbody></table>
+        </div>
+        <div class="calc-box">
+          <div class="calc-title">Beispiel:&nbsp;<span class="math">x² + 3 = -2x² + 15</span></div>
+          <div style="font-size:10.5pt;color:#334155;margin-bottom:6px;">Lösungsidee: Durch Äquivalenzumformungen sortieren und normieren</div>
+          <table class="step-table"><tbody>
+            <tr><td><span class="math">x² + 3 = -2x² + 15</span></td><td class="step-op">| <input type="text" class="input-box" data-id="rq_op1" style="width:48px;height:20px;" placeholder="- 3"></td><td><span class="step-note"><strong>Sortieren:</strong> Terme mit x² trennen</span></td></tr>
+            <tr><td><input type="text" class="input-box" data-id="rq_step2" style="width:135px;height:20px;" placeholder="x² = -2x² + 12"></td><td class="step-op">| <input type="text" class="input-box" data-id="rq_op2" style="width:48px;height:20px;" placeholder="+ 2x²"></td></tr>
+            <tr><td><span class="math">3x² = 12</span></td><td class="step-op">| : 3</td><td><span class="step-note"><strong>Normieren:</strong> durch Vorfaktor teilen</span></td></tr>
+            <tr><td><span class="math">x² = 4</span></td><td class="step-op">| ± √</td></tr>
+            <tr><td colspan="3" style="padding-top:5px;border-top:1px solid #e2e8f0;">Ergebnis: <span class="math"><strong>x₁ = +2</strong> ; <strong>x₂ = -2</strong></span></td></tr>
+          </tbody></table>
+        </div>
+      </div>
+    </section>
+    <section class="section-card">
+      <div class="section-header"><span>2. quadratische Gleichungen der Form: <span class="math">x² + px + q = 0</span></span></div>
+      <div class="grid-gq">
+        <div class="pq-formula-card">
+          <div>
+            <div style="font-weight:700;color:#334155;font-size:11.5pt;">Die p-q-Formel:</div>
+            <div style="font-size:11.5pt;margin-top:4px;">Eine Gleichung <span class="math">x² + px + q = 0</span> hat die Lösungen:</div>
+            <div class="formula-display"><span class="math" style="font-size:14.5pt;font-weight:bold;">x₁,₂ = - <span class="fraction"><span class="top">p</span><span class="bottom">2</span></span> ± <span class="sqrt"><svg class="sqrt-surd" viewBox="0 0 10 26"><path d="M 1 15 L 3 13 L 6 25 L 9.2 0.7 L 10 0.7" fill="none" stroke="currentColor" stroke-width="1.3"></path></svg><span class="radicand">(<input type="text" class="input-box" data-id="pq_f_p" style="width:38px;height:18px;" placeholder="p/2">)² - q</span></span></span></div>
+          </div>
+        </div>
+        <div class="calc-box">
+          <div class="calc-title">Beispiel: <span class="math">x² - 6x - 16 = 0</span></div>
+          <div style="padding:2px 0 6px 0;font-size:11.5pt;">Koeffizienten: <span class="math">p = <input type="text" class="input-box" data-id="gq_p" style="width:42px;height:20px;" placeholder="-6"></span> und <span class="math">q = <input type="text" class="input-box" data-id="gq_q" style="width:44px;height:20px;" placeholder="-16"></span></div>
+          <table class="step-table" style="font-size:11.5pt;width:100%;"><tbody>
+            <tr><td><span class="math">x₁,₂ = - (<span class="fraction"><span class="top"><input type="text" class="input-box" data-id="gq_sub_p1" style="width:32px;height:18px;" placeholder="-6"></span><span class="bottom">2</span></span>) ± √(...)</span></td></tr>
+            <tr><td><span class="math">x₁,₂ = 3 ± 5</span></td></tr>
+            <tr><td style="border-top:1px solid #cbd5e1;padding-top:5px;">Ergebnis: <span class="math"><strong>x₁ = <input type="text" class="input-box" data-id="gq_erg_x1" style="width:55px;height:20px;" placeholder="8"></strong> ; <strong>x₂ = <input type="text" class="input-box" data-id="gq_erg_x2" style="width:55px;height:20px;" placeholder="-2"></strong></span></td></tr>
+          </tbody></table>
+        </div>
+      </div>
+    </section>
+  </div></section>
+</div>
+<script contenteditable="false">
+const fieldLabels={"rq_erg":"Reinquadratisch: Ergebnis","rq_tab_1":"Tabelle 1","rq_tab_2":"Tabelle 2","rq_tab_3":"Tabelle 3","rq_op1":"Op 1 (-3)","rq_step2":"Schritt 2","rq_op2":"Op 2 (+2x²)","pq_f_p":"Formel p/2","gq_p":"p","-q":"q","gq_sub_p1":"Einsetzen p","gq_erg_x1":"x1","gq_erg_x2":"x2"};
+const defaultSolutions={"rq_erg":["x₁ = +2; x₂ = -2","2; -2","x = ±2","±2"],"rq_tab_1":["x = ±2","±2","2; -2"],"rq_tab_2":["q = 0","q=0","0"],"rq_tab_3":["keine Lösung","0 Lösungen","keine"],"rq_op1":["- 3","-3"],"rq_step2":["x² = -2x² + 12","x^2 = -2x^2 + 12"],"rq_op2":["+ 2x²","+2x²","2x²"],"pq_f_p":["p/2","p / 2"],"gq_p":["-6","- 6"],"gq_q":["-16","- 16"],"gq_sub_p1":["-6","- 6"],"gq_erg_x1":["8","+8"],"gq_erg_x2":["-2"]};
+function getActiveSolutions(){try{const s=localStorage.getItem("mqg_solutions");if(s)return JSON.parse(s);}catch(e){}return JSON.parse(JSON.stringify(defaultSolutions));}
+function checkAnswers(){const sol=getActiveSolutions(),inputs=document.querySelectorAll(".input-box");let c=0;inputs.forEach(i=>{const id=i.getAttribute("data-id"),allowed=sol[id]||[],val=i.value.trim().toLowerCase();const ok=allowed.some(a=>a.toLowerCase().trim()===val&&val!=="");i.classList.remove("correct","incorrect");if(ok){i.classList.add("correct");c++;}else i.classList.add("incorrect");});const b=document.getElementById("score-display");b.textContent=c+" von "+inputs.length+" richtig ("+Math.round((c/inputs.length)*100)+"%)";b.className="score-badge "+(c===inputs.length?"score-success":"score-partial");}
+function resetAnswers(){document.querySelectorAll(".input-box").forEach(i=>{i.classList.remove("correct","incorrect");i.value="";});document.getElementById("score-display").textContent="Zurückgesetzt";}
+function toggleTeacherPanel(){const p=document.getElementById("teacher-panel");p.style.display=p.style.display==="block"?"none":"block";}
+function fillSolutionsIntoInputs(){const sol=getActiveSolutions();document.querySelectorAll(".input-box").forEach(i=>{const id=i.getAttribute("data-id");if(sol[id]&&sol[id][0])i.value=sol[id][0];});}
+<\/script></body></html>`
+      },
+
+      feedback: {
+        title: "Schüler-Feedbackbogen – 9. Klasse",
+        filename: "feedbackbogen_klasse_9.html",
+        getHtml: () => `<!DOCTYPE html>
+<html lang="de"><head><meta charset="UTF-8"><title>Schüler-Feedbackbogen – 9. Klasse</title><style>
+@page{size:A4 portrait;margin:0}*,*::before,*::after{box-sizing:border-box}html,body{margin:0;padding:0;background-color:#ffffff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:#1e293b}body{padding:20px 0;margin:0 auto;max-width:850px!important}[contenteditable="true"]{outline:none;cursor:text}.page{height:297mm;margin:0 auto;padding:10mm 14mm;background:#fff;border:1px solid rgba(0,0,0,0.1);display:flex;flex-direction:column;justify-content:space-between;position:relative}.two-up-container{display:flex;flex-direction:column;height:100%;justify-content:space-between}.cut-line{border:none;border-top:1.5px dashed #94a3b8;margin:4mm 0}.sheet-a5{height:calc(50% - 5mm);display:flex;flex-direction:column;justify-content:space-between;padding:1mm 2mm}.sheet-header{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:2px solid #0284c7;padding-bottom:2px;margin-bottom:2px}.header-titles h1{font-size:13pt;font-weight:700;color:#0f172a;margin:0}.header-titles p{font-size:8pt;color:#64748b;margin:0}.info-badge{background:#f0f9ff;border-left:3px solid #0284c7;padding:3px 8px;font-size:7.5pt;color:#0369a1;margin-bottom:3px}.criteria-container{display:flex;flex-direction:column;gap:4px}.criterion-card{background:#f8fafc;border:1px solid #e2e8f0;border-radius:5px;padding:3px 8px}.criterion-title{font-size:8.5pt;font-weight:600;color:#1e293b;display:flex;align-items:center;gap:5px}.criterion-number{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;background:#0284c7;color:#fff;border-radius:50%;font-size:7pt;font-weight:700}.scale-wrapper{display:flex;align-items:center;justify-content:space-between;gap:8px}.pole-label{font-size:7pt;color:#475569;font-weight:500;max-width:105px}.scale-points{display:flex;align-items:center;gap:12px;background:#fff;padding:2px 9px;border-radius:16px;border:1px solid #cbd5e1}.scale-point{display:flex;flex-direction:column;align-items:center;gap:1px}.scale-circle{width:14px;height:14px;border:1.5px solid #64748b;border-radius:50%;background:#fff}.scale-subtext{font-size:6pt;color:#94a3b8;font-weight:600}.feedback-comment{margin-top:3px;border:1px solid #cbd5e1;background:#fff;border-radius:5px;padding:5px 10px;}.comment-label{font-size:7.5pt;font-weight:600;color:#334155;margin-bottom:6px;display:flex;justify-content:space-between}.optional-hint{font-weight:normal;font-size:7pt;color:#94a3b8}.line{border-bottom:1.2px dashed #94a3b8;height:20px}.sheet-bottom{display:flex;justify-content:space-between;align-items:center;font-size:7pt;color:#94a3b8;margin-top:2px;padding-top:2px;border-top:1px solid #f1f5f9}
+</style></head><body>
+<div contenteditable="true">
+  <section class="page"><div class="two-up-container">
+    <div class="sheet-a5">
+      <header class="sheet-header"><div class="header-titles"><h1>Stunden-Feedback</h1><p>Klasse 9.4</p></div></header>
+      <div class="info-badge"><strong>Anonyme Rückmeldung:</strong> Setze bei jedem Kriterium <u>ein Kreuz</u> an der passenden Stelle.</div>
+      <div class="criteria-container">
+        <div class="criterion-card"><div class="criterion-title"><span class="criterion-number">1</span> Tafelbild</div><div class="scale-wrapper"><span class="pole-label">Unübersichtlich / schwer lesbar</span><div class="scale-points"><div class="scale-point"><span class="scale-circle"></span><span class="scale-subtext">- -</span></div><div class="scale-point"><span class="scale-circle"></span><span class="scale-subtext">-</span></div><div class="scale-point"><span class="scale-circle"></span><span class="scale-subtext">o</span></div><div class="scale-point"><span class="scale-circle"></span><span class="scale-subtext">+</span></div><div class="scale-point"><span class="scale-circle"></span><span class="scale-subtext">++</span></div></div><span class="pole-label" style="text-align:right">Klar gegliedert & sehr gut lesbar</span></div></div>
+        <div class="criterion-card"><div class="criterion-title"><span class="criterion-number">2</span> Tempo beim Erklären</div><div class="scale-wrapper"><span class="pole-label">Viel zu schnell</span><div class="scale-points"><div class="scale-point"><span class="scale-circle"></span><span class="scale-subtext">zu schnell</span></div><div class="scale-point"><span class="scale-circle"></span><span class="scale-subtext">eher schnell</span></div><div class="scale-point"><span class="scale-circle"></span><span class="scale-subtext">genau richtig</span></div><div class="scale-point"><span class="scale-circle"></span><span class="scale-subtext">eher langsam</span></div><div class="scale-point"><span class="scale-circle"></span><span class="scale-subtext">zu langsam</span></div></div><span class="pole-label" style="text-align:right">Viel zu langsam</span></div></div>
+        <div class="criterion-card"><div class="criterion-title"><span class="criterion-number">3</span> Anzahl der Beispiele an der Tafel</div><div class="scale-wrapper"><span class="pole-label">Zu wenige Beispiele</span><div class="scale-points"><div class="scale-point"><span class="scale-circle"></span><span class="scale-subtext">zu wenig</span></div><div class="scale-point"><span class="scale-circle"></span><span class="scale-subtext">etwas wenig</span></div><div class="scale-point"><span class="scale-circle"></span><span class="scale-subtext">optimal</span></div><div class="scale-point"><span class="scale-circle"></span><span class="scale-subtext">etwas viel</span></div><div class="scale-point"><span class="scale-circle"></span><span class="scale-subtext">zu viele</span></div></div><span class="pole-label" style="text-align:right">Zu viele Beispiele</span></div></div>
+      </div>
+      <div class="feedback-comment"><div class="comment-label"><span>Ich wünsche mir für künftig...</span><span class="optional-hint">(freiwillig)</span></div><div class="line"></div><div class="line"></div><div class="line"></div></div>
+      <div class="sheet-bottom"><span>Vielen Dank für deine Rückmeldung!</span></div>
+    </div>
+    <div class="cut-line"></div>
+    <div class="sheet-a5">
+      <header class="sheet-header"><div class="header-titles"><h1>Stunden-Feedback</h1><p>Klasse 9.4</p></div></header>
+      <div class="info-badge"><strong>Anonyme Rückmeldung:</strong> Setze bei jedem Kriterium <u>ein Kreuz</u> an der passenden Stelle.</div>
+      <div class="criteria-container">
+        <div class="criterion-card"><div class="criterion-title"><span class="criterion-number">1</span> Tafelbild</div><div class="scale-wrapper"><span class="pole-label">Unübersichtlich / schwer lesbar</span><div class="scale-points"><div class="scale-point"><span class="scale-circle"></span><span class="scale-subtext">- -</span></div><div class="scale-point"><span class="scale-circle"></span><span class="scale-subtext">-</span></div><div class="scale-point"><span class="scale-circle"></span><span class="scale-subtext">o</span></div><div class="scale-point"><span class="scale-circle"></span><span class="scale-subtext">+</span></div><div class="scale-point"><span class="scale-circle"></span><span class="scale-subtext">++</span></div></div><span class="pole-label" style="text-align:right">Klar gegliedert & sehr gut lesbar</span></div></div>
+        <div class="criterion-card"><div class="criterion-title"><span class="criterion-number">2</span> Tempo beim Erklären</div><div class="scale-wrapper"><span class="pole-label">Viel zu schnell</span><div class="scale-points"><div class="scale-point"><span class="scale-circle"></span><span class="scale-subtext">zu schnell</span></div><div class="scale-point"><span class="scale-circle"></span><span class="scale-subtext">eher schnell</span></div><div class="scale-point"><span class="scale-circle"></span><span class="scale-subtext">genau richtig</span></div><div class="scale-point"><span class="scale-circle"></span><span class="scale-subtext">eher langsam</span></div><div class="scale-point"><span class="scale-circle"></span><span class="scale-subtext">zu langsam</span></div></div><span class="pole-label" style="text-align:right">Viel zu langsam</span></div></div>
+        <div class="criterion-card"><div class="criterion-title"><span class="criterion-number">3</span> Anzahl der Beispiele an der Tafel</div><div class="scale-wrapper"><span class="pole-label">Zu wenige Beispiele</span><div class="scale-points"><div class="scale-point"><span class="scale-circle"></span><span class="scale-subtext">zu wenig</span></div><div class="scale-point"><span class="scale-circle"></span><span class="scale-subtext">etwas wenig</span></div><div class="scale-point"><span class="scale-circle"></span><span class="scale-subtext">optimal</span></div><div class="scale-point"><span class="scale-circle"></span><span class="scale-subtext">etwas viel</span></div><div class="scale-point"><span class="scale-circle"></span><span class="scale-subtext">zu viele</span></div></div><span class="pole-label" style="text-align:right">Zu viele Beispiele</span></div></div>
+      </div>
+      <div class="feedback-comment"><div class="comment-label"><span>Ich wünsche mir für künftig...</span><span class="optional-hint">(freiwillig)</span></div><div class="line"></div><div class="line"></div><div class="line"></div></div>
+      <div class="sheet-bottom"><span>Vielen Dank für deine Rückmeldung!</span></div>
+    </div>
+  </div></section>
+</div>
+<\/script></body></html>`
+      }
+    };
+
+    // Erzeugt Blob-URL für Dokumente
+    function getDocBlobUrl(key) {
+      const doc = DOCS[key];
+      if (!doc) return null;
+      const html = doc.getHtml();
+      const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+      return URL.createObjectURL(blob);
+    }
+
+    // Öffnet Dokument im Vollbild-Viewer
+    function openDoc(key) {
+      const doc = DOCS[key];
+      if (!doc) return;
+
+      currentDocKey = key;
+      if (currentBlobUrl) {
+        URL.revokeObjectURL(currentBlobUrl);
+      }
+      currentBlobUrl = getDocBlobUrl(key);
+
+      const modal = document.getElementById('viewerModal');
+      const frame = document.getElementById('viewerFrame');
+      const titleEl = document.getElementById('viewerTitle');
+
+      titleEl.textContent = doc.title;
+      frame.src = currentBlobUrl;
+
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      setTimeout(() => {
+        modal.classList.remove('opacity-0');
+      }, 10);
+
+      document.body.style.overflow = 'hidden';
+    }
+
+    // In neuem Tab öffnen
+    function openInNewTab(key) {
+      const url = getDocBlobUrl(key);
+      if (url) {
+        window.open(url, '_blank');
+      }
+    }
+
+    function openCurrentInNewTab() {
+      if (currentDocKey) {
+        openInNewTab(currentDocKey);
+      }
+    }
+
+    // Herunterladen
+    function downloadDoc(key) {
+      const doc = DOCS[key];
+      if (!doc) return;
+      
+      const html = doc.getHtml();
+      const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = doc.filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    }
+
+    function downloadCurrentDoc() {
+      if (currentDocKey) {
+        downloadDoc(currentDocKey);
+      }
+    }
+
+    // Viewer schließen
+    function closeViewer() {
+      const modal = document.getElementById('viewerModal');
+      const frame = document.getElementById('viewerFrame');
+
+      modal.classList.add('opacity-0');
+      setTimeout(() => {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+        frame.src = '';
+        if (currentBlobUrl) {
+          URL.revokeObjectURL(currentBlobUrl);
+          currentBlobUrl = null;
+        }
+        currentDocKey = null;
+      }, 150);
+
+      document.body.style.overflow = 'auto';
+    }
+
+    // Menü umschalten
+    function toggleMenu() {
+      const menu = document.getElementById('dropdownMenu');
+      const arrow = document.getElementById('menuArrow');
+      const isHidden = menu.classList.contains('hidden');
+      
+      if (isHidden) {
+        menu.classList.remove('hidden');
+        arrow.style.transform = 'rotate(180deg)';
+      } else {
+        menu.classList.add('hidden');
+        arrow.style.transform = 'rotate(0deg)';
+      }
+    }
+
+    document.addEventListener('click', (e) => {
+      const btn = document.getElementById('menuToggleBtn');
+      const menu = document.getElementById('dropdownMenu');
+      if (btn && menu && !btn.contains(e.target) && !menu.contains(e.target)) {
+        menu.classList.add('hidden');
+        const arrow = document.getElementById('menuArrow');
+        if (arrow) arrow.style.transform = 'rotate(0deg)';
+      }
+    });
+
+    // Dark Mode Handling
+    function initTheme() {
+      const saved = localStorage.getItem('sm_theme');
+      if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    }
+
+    function toggleDarkMode() {
+      const isDark = document.documentElement.classList.toggle('dark');
+      localStorage.setItem('sm_theme', isDark ? 'dark' : 'light');
+    }
+
+    /*
+     * Daten der 10 Lernpfad-Stationen für kranke/abwesende Schüler
+     * inklusive zweigeteilter Struktur: Lernziele mit interaktiver Selbstüberprüfung
+     */
+    const LESSON_STATIONS = {
+      1: {
+        title: "Von linearen zu quadratischen Funktionen",
+        tag: "Station 1 · Einstieg",
+        goals: [
+          {
+            text: "...den Unterschied zwischen linearem und quadratischem Wachstum erklären.",
+            check: {
+              title: "Lineares vs. quadratisches Wachstum",
+              question: "Welche Aussage beschreibt typisches quadratisches Wachstum (z. B. Bremsweg oder Flächeninhalt eines Quadrats)?",
+              options: [
+                { text: "Bei Verdopplung des x-Wertes verdoppelt sich auch der y-Wert.", correct: false },
+                { text: "Bei Verdopplung des x-Wertes vervierfacht sich der y-Wert.", correct: true },
+                { text: "Der y-Wert steigt pro Schritt immer um denselben festen Betrag.", correct: false }
+              ],
+              explanation: "Richtig! f(2x) = (2x)² = 4x². Die Verdopplung von x führt zur Vervierfachung des Funktionswerts."
+            }
+          },
+          {
+            text: "...eine Wertetabelle für die Grundfunktion f(x) = x² korrekt berechnen.",
+            check: {
+              title: "Wertetabelle f(x) = x²",
+              question: "Welchen Funktionswert hat f(x) = x² an der Stelle x = -3?",
+              options: [
+                { text: "-9", correct: false },
+                { text: "+6", correct: false },
+                { text: "+9", correct: true }
+              ],
+              explanation: "Genau: (-3) · (-3) = +9. Beim Quadrieren reeller Zahlen ist das Ergebnis immer positiv (oder null)."
+            }
+          }
+        ],
+        content: "Wir haben den Unterschied zwischen gleichmäßigem linearem Wachstum (Geraden, konstante Steigung m) und beschleunigtem quadratischem Wachstum (z. B. Bremswege, Flächeninhalte von Quadraten) erarbeitet. Die Funktionsgleichung f(x) = x² wurde eingeführt und eine Wertetabelle von x = -3 bis x = +3 berechnet.",
+        hefteintrag: "f(x) = x²\nEin quadratischer Term beinhaltet x². Negative x-Werte werden beim Quadrieren positiv: (-2)² = 4.",
+        hausaufgabe: "Lehrbuch S. 78, Nr. 1 und 2",
+        material: "Buch S. 76–78 · Arbeitsblatt 1 (Wertetabellen)"
+      },
+      2: {
+        title: "Die Normalparabel f(x) = x²",
+        tag: "Station 2 · Grundlagen",
+        goals: [
+          {
+            text: "...die wesentlichen Eigenschaften der Normalparabel (Scheitelpunkt, Symmetrie) nennen.",
+            check: {
+              title: "Eigenschaften der Normalparabel",
+              question: "Wo liegt der Scheitelpunkt der reinen Normalparabel f(x) = x² und welche Symmetrie besitzt sie?",
+              options: [
+                { text: "S(0|1), punktsymmetrisch zum Ursprung", correct: false },
+                { text: "S(0|0), achsensymmetrisch zur y-Achse", correct: true },
+                { text: "S(1|0), achsensymmetrisch zur x-Achse", correct: false }
+              ],
+              explanation: "Perfekt! Der tiefste Punkt liegt im Ursprung S(0|0), und die Parabel ist spiegelsymmetrisch zur y-Achse (x = 0)."
+            }
+          },
+          {
+            text: "...die Normalparabel mit der Parabel-Schablone korrekt ins Koordinatensystem einzeichnen.",
+            check: {
+              title: "Arbeit mit der Schablone",
+              question: "Worauf muss man beim Zeichnen mit der Parabelschablone zuerst achten?",
+              options: [
+                { text: "Den Scheitelpunkt der Schablone exakt auf den berechneten Scheitelpunkt legen und die Symmetrieachse senkrecht ausrichten.", correct: true },
+                { text: "Die Schablone einfach beliebig auf die Nullstellen legen.", correct: false },
+                { text: "Die Schablone stets um 90° drehen.", correct: false }
+              ],
+              explanation: "Richtig! Scheitelpunkt markieren, Schablone senkrecht anlegen und dann die Ränder sauber nachziehen."
+            }
+          }
+        ],
+        content: "In dieser Stunde wurde der Graph von f(x) = x² sauber ins Koordinatensystem gezeichnet. Wir haben die Fachbegriffe Scheitelpunkt S(0|0), Symmetrieachse (y-Achse, x = 0) und Parabel-Schablone kennengelernt.",
+        hefteintrag: "Normalparabel:\n• Scheitelpunkt: S(0|0)\n• Symmetrie: Achsensymmetrisch zur y-Achse\n• Öffnung: Nach oben geöffnet",
+        hausaufgabe: "Arbeitsblatt 'Punkte und Linien' fertigstellen",
+        material: "Parabel-Schablone mitbringen · Buch S. 80"
+      },
+      3: {
+        title: "Senkrechte Verschiebung: f(x) = x² + e",
+        tag: "Station 3 · Verschiebung",
+        goals: [
+          {
+            text: "...die Wirkung des Parameters e auf die Lage der Parabel beschreiben.",
+            check: {
+              title: "Wirkung von e",
+              question: "Wohin verschiebt sich die Parabel bei f(x) = x² - 4 gegenüber der Normalparabel?",
+              options: [
+                { text: "Um 4 Einheiten nach links.", correct: false },
+                { text: "Um 4 Einheiten nach rechts.", correct: false },
+                { text: "Um 4 Einheiten senkrecht nach unten.", correct: true }
+              ],
+              explanation: "Korrekt! Der Summand e verschiebt den gesamten Graphen entlang der y-Achse nach oben (e > 0) oder unten (e < 0)."
+            }
+          },
+          {
+            text: "...den Scheitelpunkt einer Funktion der Form f(x) = x² + e direkt ablesen.",
+            check: {
+              title: "Scheitelpunkt ablesen",
+              question: "Welchen Scheitelpunkt hat f(x) = x² + 5?",
+              options: [
+                { text: "S(5 | 0)", correct: false },
+                { text: "S(0 | 5)", correct: true },
+                { text: "S(-5 | 0)", correct: false }
+              ],
+              explanation: "Richtig! Da keine waagerechte Verschiebung vorliegt, ist x = 0, also S(0 | 5)."
+            }
+          }
+        ],
+        content: "Wir haben untersucht, wie sich der Parameter e auf die Normalparabel auswirkt. Für e > 0 wandert jeder Punkt nach oben, für e < 0 nach unten. Die Form der Parabel bleibt dabei völlig unverändert.",
+        hefteintrag: "f(x) = x² + e\n• Verschiebung um e entlang der y-Achse\n• Neuer Scheitelpunkt: S(0 | e)",
+        hausaufgabe: "Buch S. 83, Nr. 3 und 4 (Graph skizzieren)",
+        material: "Buch S. 82–83"
+      },
+      4: {
+        title: "Waagerechte Verschiebung: f(x) = (x − d)²",
+        tag: "Station 4 · Verschiebung",
+        goals: [
+          {
+            text: "...die 'Vorzeichen-Falle' bei der Verschiebung in x-Richtung sicher anwenden.",
+            check: {
+              title: "Vorzeichen in der Klammer",
+              question: "Welche Funktionsgleichung gehört zu einer um 3 Einheiten nach RECHTS verschobenen Normalparabel?",
+              options: [
+                { text: "f(x) = (x + 3)²", correct: false },
+                { text: "f(x) = (x - 3)²", correct: true },
+                { text: "f(x) = x² + 3", correct: false }
+              ],
+              explanation: "Hervorragend! In der Klammer steht (x - d). Für eine Verschiebung nach rechts (d = +3) lautet die Formel f(x) = (x - 3)²."
+            }
+          },
+          {
+            text: "...aus dem Scheitelpunkt S(-2|0) die Funktionsgleichung aufstellen.",
+            check: {
+              title: "Funktionsgleichung aufstellen",
+              question: "Der Scheitelpunkt liegt bei S(-2 | 0). Wie lautet die Gleichung?",
+              options: [
+                { text: "f(x) = (x + 2)²", correct: true },
+                { text: "f(x) = (x - 2)²", correct: false },
+                { text: "f(x) = x² - 2", correct: false }
+              ],
+              explanation: "Richtig! d = -2 eingesetzt ergibt: (x - (-2))² = (x + 2)²."
+            }
+          }
+        ],
+        content: "Erkundung der Verschiebung entlang der x-Achse. Wichtigste Erkenntnis der Stunde: Das Vorzeichen in der Klammer kehrt sich geometrisch um! f(x) = (x - 3)² verschiebt um 3 nach RECHTS, f(x) = (x + 3)² um 3 nach LINKS.",
+        hefteintrag: "f(x) = (x − d)²\n• Verschiebung entlang der x-Achse um d\n• d > 0: nach rechts (in der Klammer steht Minus)\n• d < 0: nach links (in der Klammer steht Plus)\n• Scheitelpunkt: S(d | 0)",
+        hausaufgabe: "Lehrbuch S. 86, Nr. 2 a–f",
+        material: "Buch S. 85–86"
+      },
+      5: {
+        title: "Kombination: f(x) = (x − d)² + e",
+        tag: "Station 5 · Kombination",
+        goals: [
+          {
+            text: "...den Scheitelpunkt S(d|e) direkt aus der Scheitelpunktform angeben.",
+            check: {
+              title: "Scheitelpunkt S(d|e)",
+              question: "Welchen Scheitelpunkt hat die Funktion f(x) = (x - 4)² + 7?",
+              options: [
+                { text: "S(-4 | 7)", correct: false },
+                { text: "S(4 | -7)", correct: false },
+                { text: "S(4 | 7)", correct: true }
+              ],
+              explanation: "Exakt! d = 4 und e = 7, daher liegt der Scheitelpunkt bei S(4 | 7)."
+            }
+          },
+          {
+            text: "...eine Funktionsgleichung zu einem gegebenen Scheitelpunkt im Koordinatensystem formulieren.",
+            check: {
+              title: "Scheitelpunkt umsetzen",
+              question: "Gegeben ist der Scheitelpunkt S(-5 | -1). Wie lautet die zugehörige Normalparabelgleichung?",
+              options: [
+                { text: "f(x) = (x + 5)² - 1", correct: true },
+                { text: "f(x) = (x - 5)² - 1", correct: false },
+                { text: "f(x) = (x + 5)² + 1", correct: false }
+              ],
+              explanation: "Sehr gut! d = -5 führt zu (x + 5)², und e = -1 bleibt als -1 am Ende stehen."
+            }
+          }
+        ],
+        content: "Gemeinsames Üben von Funktionen der Form f(x) = (x − d)² + e. Wir haben geübt, den Scheitelpunkt S(d|e) direkt abzulesen und die Parabel mit der Schablone sofort an die richtige Stelle zu zeichnen.",
+        hefteintrag: "f(x) = (x − d)² + e\nScheitelpunkt: S(d | e)\nBeispiel: f(x) = (x - 2)² + 3  →  S(2 | 3)",
+        hausaufgabe: "Arbeitsblatt Station 5 vollständig bearbeiten",
+        material: "Arbeitsblatt 'Vom Scheitelpunkt zum Graphen'"
+      },
+      6: {
+        title: "Streckung, Stauchung & Spiegelung: a",
+        tag: "Station 6 · Formfaktor",
+        goals: [
+          {
+            text: "...anhand des Vorzeichens von a die Öffnungsrichtung bestimmen.",
+            check: {
+              title: "Öffnungsrichtung erkennen",
+              question: "Wie ist eine Parabel mit negativem Vorfaktor a (z. B. a = -1,5) geöffnet?",
+              options: [
+                { text: "Nach oben geöffnet.", correct: false },
+                { text: "Nach unten geöffnet.", correct: true },
+                { text: "Sie ist keine Parabel mehr.", correct: false }
+              ],
+              explanation: "Richtig! Ist a negativ (a < 0), ist die Parabel nach unten geöffnet (Spiegelung an der x-Achse)."
+            }
+          },
+          {
+            text: "...unterscheiden, ob eine Parabel gestreckt (schmaler) oder gestaucht (breiter) ist.",
+            check: {
+              title: "Gestreckt oder gestaucht?",
+              question: "Wie verhält sich der Graph von f(x) = 0,25x² im Vergleich zur Normalparabel?",
+              options: [
+                { text: "Er ist gestaucht (breiter als die Normalparabel).", correct: true },
+                { text: "Er ist gestreckt (schmaler als die Normalparabel).", correct: false },
+                { text: "Er hat dieselbe Form wie die Normalparabel.", correct: false }
+              ],
+              explanation: "Korrekt! Weil |a| < 1 (hier 0,25), wächst die Funktion langsamer: Der Graph ist flacher bzw. breiter (gestaucht)."
+            }
+          }
+        ],
+        content: "In dieser Stunde wurde untersucht, was der Vorfaktor a bewirkt: Bei |a| > 1 wird die Parabel schmaler (gestreckt), bei 0 < |a| < 1 breiter (gestaucht). Ist a negativ, ist die Parabel nach unten geöffnet.",
+        hefteintrag: "f(x) = a·x²\n• a > 0: nach oben geöffnet | a < 0: nach unten geöffnet\n• |a| > 1: gestreckt (schmaler)\n• 0 < |a| < 1: gestaucht (breiter)",
+        hausaufgabe: "Buch S. 90, Nr. 1 und 3",
+        material: "Buch S. 88–90"
+      },
+      7: {
+        title: "Die allgemeine Scheitelpunktform",
+        tag: "Station 7 · Hauptform",
+        goals: [
+          {
+            text: "...alle Parameter a, d und e aus einer vollständigen Funktionsgleichung deuten.",
+            check: {
+              title: "Vollständige Analyse",
+              question: "Gegeben ist f(x) = -2·(x - 1)² + 3. Welche Beschreibung trifft zu?",
+              options: [
+                { text: "Nach oben geöffnet, gestaucht, Scheitelpunkt S(-1 | 3)", correct: false },
+                { text: "Nach unten geöffnet, gestreckt (schmaler), Scheitelpunkt S(1 | 3)", correct: true },
+                { text: "Nach unten geöffnet, gleich breit wie Normalparabel, Scheitelpunkt S(1 | -3)", correct: false }
+              ],
+              explanation: "Perfekt! a = -2 (nach unten, schmaler), d = 1 und e = 3 ergeben S(1 | 3)."
+            }
+          },
+          {
+            text: "...den Vorfaktor a durch Einsetzen eines zusätzlichen Punktes rechnerisch ermitteln.",
+            check: {
+              title: "Parameter a berechnen",
+              question: "Eine Parabel hat den Scheitelpunkt S(0|0) und verläuft durch den Punkt P(2 | 8). Welchen Wert hat a?",
+              options: [
+                { text: "a = 2", correct: true },
+                { text: "a = 4", correct: false },
+                { text: "a = 0,5", correct: false }
+              ],
+              explanation: "Richtig gerechnet! Ansatz: y = a · x² → 8 = a · 2² → 8 = 4a → a = 2."
+            }
+          }
+        ],
+        content: "Zusammenführen aller drei Parameter a, d und e. Wir haben Funktionsgleichungen aus gegebenen Graphen abgelesen sowie aus gegebenen Punkten die Scheitelpunktform aufgestellt.",
+        hefteintrag: "Allgemeine Scheitelpunktform:\nf(x) = a·(x − d)² + e\nS(d | e) ist der Scheitelpunkt. a bestimmt Form und Öffnung.",
+        hausaufgabe: "Buch S. 94, Nr. 2, 4 und 5",
+        material: "Buch S. 93–95"
+      },
+      8: {
+        title: "Nullstellen aus der Scheitelpunktform",
+        tag: "Station 8 · Berechnung",
+        goals: [
+          {
+            text: "...den Lösungsansatz f(x) = 0 für Nullstellen rechnerisch schrittweise anwenden.",
+            check: {
+              title: "Reihenfolge der Umformungen",
+              question: "Wie löst man 0 = 2(x - 3)² - 8 am einfachsten nach x auf?",
+              options: [
+                { text: "Erst Klammer ausmultiplizieren und dann die p-q-Formel anwenden.", correct: false },
+                { text: "Zuerst + 8, dann geteilt durch 2, dann die Wurzel ziehen (±) und zuletzt + 3.", correct: true },
+                { text: "Zuerst sofort die Wurzel ziehen.", correct: false }
+              ],
+              explanation: "Genau! 8 = 2(x - 3)² → 4 = (x - 3)² → ±2 = x - 3 → x₁ = 1, x₂ = 5. Der Weg ohne Ausmultiplizieren ist viel schneller!"
+            }
+          },
+          {
+            text: "...erkennen, wann eine Parabel keine, eine oder zwei Nullstellen besitzt.",
+            check: {
+              title: "Anzahl der Nullstellen",
+              question: "Wie viele Nullstellen hat die Funktion f(x) = (x - 2)² + 4?",
+              options: [
+                { text: "Keine Nullstelle (der Scheitelpunkt liegt über der x-Achse und sie öffnet nach oben).", correct: true },
+                { text: "Genau eine Nullstelle.", correct: false },
+                { text: "Zwei Nullstellen.", correct: false }
+              ],
+              explanation: "Richtig! S(2|4) liegt oberhalb der x-Achse. Da die Parabel nach oben öffnet, schneidet sie die x-Achse nie. Rechnerisch: (x - 2)² = -4 hat keine reelle Lösung."
+            }
+          }
+        ],
+        content: "Wir haben den rechnerischen Weg erarbeitet, um Nullstellen ohne Ausmultiplizieren zu bestimmen: 0 = a·(x - d)² + e setzen, nach dem Quadrat auflösen und die Wurzel ziehen (± beachten).",
+        hefteintrag: "Nullstellenberechnung:\n1. f(x) = 0 setzen\n2. e auf die andere Seite bringen\n3. Durch a teilen\n4. Wurzel ziehen (±)\n5. Nach x auflösen: x₁ und x₂",
+        hausaufgabe: "4 Übungsaufgaben vom Tafelbild lösen",
+        material: "Übungsblatt Nullstellen"
+      },
+      9: {
+        title: "Sach- und Modellierungsaufgaben",
+        tag: "Station 9 · Anwendung",
+        goals: [
+          {
+            text: "...ein passendes Koordinatensystem in ein Realszenario legen (z. B. Ursprung am Boden).",
+            check: {
+              title: "Koordinatensystem wählen",
+              question: "Ein Brückenbogen hat eine Spannweite von 10 m und eine maximale Höhe von 5 m. Wo platziert man den Ursprung am geschicktesten?",
+              options: [
+                { text: "In der Mitte am Boden (Scheitelpunkt liegt bei S(0 | 5)).", correct: true },
+                { text: "Beliebig weit entfernt außerhalb der Brücke.", correct: false },
+                { text: "Genau auf die Brückenspitze kopfüber.", correct: false }
+              ],
+              explanation: "Sehr gut! Legt man den Ursprung mittig auf den Boden, ist d = 0 und S(0|5). Das vereinfacht die Gleichung zu f(x) = a·x² + 5."
+            }
+          },
+          {
+            text: "...reale Fragen (z. B. Durchfahrtshöhe eines Lkw) mit Funktionswerten beantworten.",
+            check: {
+              title: "Modellierung anwenden",
+              question: "Wenn ein Torbogen durch f(x) = -0,5x² + 4 modelliert wird: Wie hoch ist er in der Mitte (x = 0)?",
+              options: [
+                { text: "2 m", correct: false },
+                { text: "4 m", correct: true },
+                { text: "8 m", correct: false }
+              ],
+              explanation: "Korrekt! f(0) = -0,5 · 0² + 4 = 4 m. Die maximale Durchfahrtshöhe beträgt 4 Meter."
+            }
+          }
+        ],
+        content: "Anwendung quadratischer Funktionen auf reale Probleme: Flugbahn eines Basketballs, Spannweite einer Hängebrücke, Scheinwerfer-Reflektoren.",
+        hefteintrag: "Modellierungsschritte:\n1. Geeignetes Koordinatensystem festlegen (Ursprung wählen)\n2. Scheitelpunkt und bekannte Punkte eintragen\n3. Parameter a berechnen",
+        hausaufgabe: "Buch S. 102, Aufgabe 'Die Brücke von Mostar'",
+        material: "Buch S. 100–103"
+      },
+      10: {
+        title: "Lernzielkontrolle & Diagnose",
+        tag: "Station 10 · Abschluss",
+        goals: [
+          {
+            text: "...alle Kompetenzen der Einheit zusammenhängend auf Prüfungsniveau abrufen.",
+            check: {
+              title: "Kompetenz-Check",
+              question: "Welcher Schritt ist bei der Bestimmung von f(x) aus einem Graphen der sicherste Einstieg?",
+              options: [
+                { text: "Zuerst Scheitelpunkt S(d|e) ablesen und als Grundgerüst notieren, danach mit einem Kurvenpunkt a ermitteln.", correct: true },
+                { text: "Erst raten und dann Punkte zeichnen.", correct: false },
+                { text: "Sofort die Normalform y = ax² + bx + c annehmen.", correct: false }
+              ],
+              explanation: "Ausgezeichnet! Die Scheitelpunktform f(x) = a(x - d)² + e liefert sofort 2 von 3 Unbekannten."
+            }
+          },
+          {
+            text: "...eigene Stärken und noch offene Übungsbedarfe anhand der Checkliste formulieren.",
+            check: {
+              title: "Selbsteinschätzung",
+              question: "Was hilft am besten, wenn man bei Nullstellenberechnungen noch unsicher ist?",
+              options: [
+                { text: "Die Rechenschritte an 3 Beispielen laut durchsprechen und die Vorzeichenregeln beim Wurzelziehen (±) markieren.", correct: true },
+                { text: "Die Aufgaben bis zur Arbeit ignorieren.", correct: false }
+              ],
+              explanation: "Genau! Gezielt die Umformungsschritte (Subtraktion von e, Division durch a, ± Wurzel) visualisieren."
+            }
+          }
+        ],
+        content: "Großer Stationenzirkel zur Vorbereitung auf die Klassenarbeit. Jeder Schüler hat einen Selbsteinschätzungsbogen ausgefüllt, um eigene Lücken gezielt nachzuarbeiten.",
+        hefteintrag: "Checkliste Klassenarbeit:\n[ ] Scheitelpunktform sicher deuten\n[ ] Parabeln sauber zeichnen\n[ ] Nullstellen rechnerisch bestimmen\n[ ] Textaufgaben in Gleichungen übersetzen",
+        hausaufgabe: "Kompakttest im Buch S. 106 zur Selbstkontrolle",
+        material: "Diagnosebogen & Musterlösungen"
+      }
+    };
+
+    let activeCheckData = null;
+
+    function openLessonModal(stationNumber) {
+      const data = LESSON_STATIONS[stationNumber];
+      if (!data) return;
+
+      document.getElementById('modalStationTag').textContent = data.tag;
+      document.getElementById('modalTitle').textContent = data.title;
+      
+      // Oberer Teil: Ziele rendern mit "Überprüfen"-Button links
+      const goalsContainer = document.getElementById('modalGoalsList');
+      goalsContainer.innerHTML = '';
+
+      if (data.goals && data.goals.length > 0) {
+        data.goals.forEach((goal, idx) => {
+          const item = document.createElement('div');
+          item.className = 'flex items-center justify-between gap-2.5 p-2.5 rounded-xl bg-white/80 dark:bg-slate-900/80 border border-blue-100 dark:border-slate-800 shadow-xs hover:border-blue-300 dark:hover:border-blue-700 transition';
+          item.innerHTML = `
+            <div class="text-xs text-slate-700 dark:text-slate-200 leading-snug flex-1">
+              ${goal.text}
+            </div>
+            <button onclick="startSkillCheck(${stationNumber}, ${idx})" class="shrink-0 px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-blue-600 hover:bg-blue-700 text-white shadow-xs transition flex items-center gap-1 focus:outline-none focus:ring-2 focus:ring-blue-400">
+              <span>Prüfen</span>
+              <span>⚡</span>
+            </button>
+          `;
+          goalsContainer.appendChild(item);
+        });
+      }
+
+      // Prüfbereich zunächst verstecken
+      closeSkillCheck();
+
+      const modal = document.getElementById('lessonModal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function startSkillCheck(stationNumber, goalIdx) {
+      const station = LESSON_STATIONS[stationNumber];
+      if (!station || !station.goals || !station.goals[goalIdx]) return;
+
+      const check = station.goals[goalIdx].check;
+      if (!check) return;
+
+      activeCheckData = check;
+
+      document.getElementById('checkSkillTitle').textContent = check.title;
+      document.getElementById('checkQuestion').textContent = check.question;
+      
+      const area = document.getElementById('checkInteractiveArea');
+      area.innerHTML = '';
+
+      check.options.forEach((opt, oIdx) => {
+        const btn = document.createElement('button');
+        btn.className = 'w-full text-left p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs sm:text-sm text-slate-800 dark:text-slate-200 hover:border-blue-500 hover:bg-blue-50/50 dark:hover:bg-slate-700 transition flex items-center justify-between group';
+        btn.onclick = () => evaluateSkillCheck(oIdx);
+        btn.innerHTML = `
+          <span>${opt.text}</span>
+          <span class="text-slate-300 dark:text-slate-600 group-hover:text-blue-500 font-bold ml-2">→</span>
+        `;
+        area.appendChild(btn);
+      });
+
+      const fb = document.getElementById('checkFeedback');
+      fb.className = 'hidden mt-2.5 p-2.5 rounded-lg text-xs font-medium';
+      fb.textContent = '';
+
+      const card = document.getElementById('skillCheckCard');
+      card.classList.remove('hidden');
+      setTimeout(() => card.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 50);
+    }
+
+    function evaluateSkillCheck(selectedIndex) {
+      if (!activeCheckData) return;
+      const opt = activeCheckData.options[selectedIndex];
+      const fb = document.getElementById('checkFeedback');
+      fb.classList.remove('hidden');
+
+      if (opt.correct) {
+        fb.className = 'mt-2.5 p-3 rounded-xl text-xs font-semibold bg-emerald-50 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-200 border border-emerald-200 dark:border-emerald-800';
+        fb.innerHTML = `🎉 <b>Richtig gelöst!</b> ${activeCheckData.explanation}`;
+      } else {
+        fb.className = 'mt-2.5 p-3 rounded-xl text-xs font-semibold bg-amber-50 dark:bg-amber-950/60 text-amber-800 dark:text-amber-200 border border-amber-200 dark:border-amber-800';
+        fb.innerHTML = `🤔 <b>Noch nicht ganz richtig.</b> Lies dir die Frage noch einmal genau durch oder probiere eine andere Option!`;
+      }
+    }
+
+    function closeSkillCheck() {
+      const card = document.getElementById('skillCheckCard');
+      if (card) card.classList.add('hidden');
+      activeCheckData = null;
+    }
+
+    function closeLessonModal() {
+      const modal = document.getElementById('lessonModal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+      closeSkillCheck();
+    }
+
+    // Modal schließt bei Klick auf den Hintergrund
+    window.addEventListener('click', (e) => {
+      const modal = document.getElementById('lessonModal');
+      if (e.target === modal) {
+        closeLessonModal();
+      }
+    });
+
+    // Tastatur: Escape schließt auch das Stunden-Modal
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        const lessonModal = document.getElementById('lessonModal');
+        if (lessonModal && !lessonModal.classList.contains('hidden')) {
+          closeLessonModal();
+        }
+      }
+    });
+
+    document.addEventListener('DOMContentLoaded', initTheme);
+  </script>
+
+</body>
+</html>
